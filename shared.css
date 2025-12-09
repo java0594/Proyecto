@@ -1,0 +1,241 @@
+:root {
+    /* Colores principales */
+    --color-bg: #f5e6d3;
+    /* Fondo beige */
+    --color-primary: #2d2d2d;
+    /* Negro/Gris oscuro */
+    --color-accent: #ffcc00;
+    /* Amarillo Pokémon */
+    --color-secondary: #ff6b6b;
+    /* Rojo coral */
+
+    /* Colores de estado */
+    --color-success: #4ecdc4;
+    /* Verde agua */
+    --color-error: #ff6b6b;
+    /* Rojo */
+    --color-warning: #ffa500;
+    /* Naranja */
+
+    /*Botones*/
+    --color-btn-cyan: #42ebe8;
+    --color-btn-red: #fe3636;
+    --color-btn-yellow: #ffe260;
+
+
+    /* Badges de origen */
+    --color-api: #4ecdc4;
+    /* Verde agua - datos de API */
+    --color-cache: #ffcc00;
+    /* Amarillo - datos cacheados */
+    --color-expired: #ffa500;
+    /* Naranja - caché expirado */
+
+    /* Bordes y sombras */
+    --border-width: 4px;
+    --border-color: #2d2d2d;
+    --shadow: 6px 6px 0px #2d2d2d;
+
+    /* Tipografía */
+    --font-family: 'Courier New', monospace;
+}
+
+body {
+    background-color: white;
+    background-image: radial-gradient(circle, black 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-repeat: repeat;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.div-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.pokeball {
+    height: 80vmin;
+    width: 80vmin;
+    border-radius: 50%;
+    border: 4vmin solid black;
+    transform: rotate(-15deg);
+    background-image:
+        radial-gradient(rgba(255, 255, 255, 0.6) 20%,
+            rgba(255, 255, 255, 0.6) 20%,
+            rgba(0, 0, 0, 1) 20%,
+            rgba(0, 0, 0, 1) 30%,
+            transparent 30%,
+            transparent),
+        linear-gradient(rgba(255, 0, 0, 0.6) 46%,
+            black 46%,
+            black 54%,
+            rgba(255, 255, 255, 0.6) 54%);
+    -webkit-mask:
+        radial-gradient(circle, transparent 17%, black 19%);
+    mask:
+        radial-gradient(circle, transparent 17%, black 19%);
+}
+
+.title {
+    background-color: var(--color-btn-cyan);
+    height: 80px;
+    width: 500px;
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+.btn-white {
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    height: 50px;
+    width: 180px;
+    font-size: larger;
+}
+
+.btn-white-small {
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    height: 50px;
+    width: 100px;
+    font-size: larger;
+}
+
+.btn-cyan {
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    background-color: var(--color-btn-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    height: 50px;
+    width: 180px;
+    font-size: larger;
+}
+
+.btn-red {
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    background-color: var(--color-btn-red);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    height: 50px;
+    width: 180px;
+    font-size: larger;
+}
+
+.btn-yellow {
+    border: 4px solid var(--color-primary);
+    background-color: var(--color-btn-yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    height: 50px;
+    width: 180px;
+    font-size: larger;
+}
+
+input {
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    height: 50px;
+    width: 360px;
+    font-size: larger;
+}
+
+
+
+/*.pokeball {
+    height: 50vmin;
+    width: 50vmin;
+    border-radius: 50%;
+    background-color: red;
+    border: 3.75vmin solid black;
+    background-image:
+        radial-gradient(white 20%, white 20%, black 20%, black 30%, transparent 30%, transparent),
+        linear-gradient(red 46%, black 46%, black 54%, white 54%);
+    transform: rotate(-15deg);
+    opacity: 0.6;
+
+
+
+    -webkit-mask:
+        radial-gradient(circle, transparent 15%, black 16%);
+    mask:
+        radial-gradient(circle, transparent 15%, black 16%);
+}*/
+
+.pokeball-funciona-pero-no-entiendo {
+    aspect-ratio: 1 / 1;
+    height: min(80vmin, 600px);
+    /* tamaño máximo opcional */
+    width: auto;
+    /* lo maneja el aspect ratio */
+
+    border-radius: 50%;
+
+    /* SOLUCIÓN → borde estable */
+    border: clamp(8px, 3vmin, 24px) solid black;
+
+    transform: rotate(-15deg);
+
+    background-image:
+        radial-gradient(rgba(255, 255, 255, 0.6) 20%,
+            rgba(255, 255, 255, 0.6) 20%,
+            rgba(0, 0, 0, 1) 20%,
+            rgba(0, 0, 0, 1) 30%,
+            transparent 30%,
+            transparent),
+        linear-gradient(rgba(255, 0, 0, 0.6) 46%,
+            black 46%,
+            black 54%,
+            rgba(255, 255, 255, 0.6) 54%);
+
+    -webkit-mask: radial-gradient(circle, transparent 17%, black 19%);
+    mask: radial-gradient(circle, transparent 17%, black 19%);
+
+    pointer-events: none;
+}
