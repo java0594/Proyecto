@@ -46,10 +46,12 @@ body {
     background-size: 20px 20px;
     background-repeat: repeat;
     min-height: 100vh;
-    display: flex;
+    /* display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; */
     font-family: var(--font-family);
+    position: relative;
+    overflow: hidden;
 }
 
 nav {
@@ -67,8 +69,8 @@ nav {
 }
 
 .pokeball {
-    height: 80vmin;
-    width: 80vmin;
+    height: 60vmin;
+    width: 60vmin;
     border-radius: 50%;
     border: 4vmin solid black;
     transform: rotate(-15deg);
@@ -87,6 +89,11 @@ nav {
         radial-gradient(circle, transparent 17%, black 19%);
     mask:
         radial-gradient(circle, transparent 17%, black 19%);
+        position:absolute;
+        inset: 0; 
+        margin: auto;
+        z-index: -1;
+        pointer-events: none;
 }
 
 .title {
@@ -101,6 +108,7 @@ nav {
     font-family: var(--font-family);
     font-weight: bold;
     font-size: xx-large;
+    transform: rotate(-13deg);
 }
 
 .btn-white {
