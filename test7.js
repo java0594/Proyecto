@@ -1,0 +1,259 @@
+// -----------------------------------------------------
+// CONFIGURACIÓN
+// -----------------------------------------------------
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutos
+
+// -----------------------------------------------------
+// HELPERS
+// -----------------------------------------------------
+function sanitizeInput(raw) {
+    if (raw === null || raw === undefined) return "";
+    return String(raw).trim();
+}
+
+function showResultHtml(html) {
+    const result = document.getElementById("result");
+    if (result) result.innerHTML = html;
+}
+
+function showMessage(msg) {
+    showResultHtml(`<p>${msg}</p>`);
+}
+
+// -----------------------------------------------------
+// FUNCIÓN PRINCIPAL DE CACHE (robusta)
+// -----------------------------------------------------
+async function fetchConCache(url, cacheKey) {
+    try {
+        const cacheRaw = localStorage.getItem(cacheKey);
+        if (cacheRaw) {
+            const cacheObj = JSON.parse(cacheRaw);
+            const now = Date.now();
+            if (now - cacheObj.timestamp < CACHE_TTL) {
+                return { ok: true, source: "cache", data: cacheObj.data };
+            }
+        }
+    } catch (err) {
+        console.warn("Error leyendo cache:", err);
+        localStorage.removeItem(cacheKey);
+    }
+
+    let response;
+    try {
+        response = await fetch(url);
+    } catch (err) {
+        return { ok: false, error: `Network error: ${err.message}` };
+    }
+
+    if (!response.ok) {
+        return { ok: false, error: `HTTP ${response.status} ${response.statusText}` };
+    }
+
+    let data;
+    try {
+        data = await response.json();
+    } catch (err) {
+        return { ok: false, error: `JSON parse error: ${err.message}` };
+    }
+
+    try {
+        localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), data }));
+    } catch (err) {
+        console.warn("No se pudo guardar en localStorage:", err);
+    }
+
+    return { ok: true, source: "api", data };
+}
+
+// -----------------------------------------------------
+// OBTENER POKÉMON (por nombre o id)
+// -----------------------------------------------------
+async function obtenerPokemon(entrada) {
+    const clave = /^\d+$/.test(String(entrada).trim()) ? String(entrada).trim() : String(entrada).trim().toLowerCase();
+    const url = `https://pokeapi.co/api/v2/pokemon/${clave}`;
+    const cacheKey = `pokemon-${clave}`;
+    return await fetchConCache(url, cacheKey);
+}
+
+// -----------------------------------------------------
+// OBTENER HABILIDAD
+// -----------------------------------------------------
+async function obtenerHabilidad(nombre) {
+    const clave = sanitizeInput(nombre).toLowerCase();
+    const url = `https://pokeapi.co/api/v2/ability/${clave}`;
+    const cacheKey = `ability-${clave}`;
+    return await fetchConCache(url, cacheKey);
+}
+
+// -----------------------------------------------------
+// OBTENER EVOLUCIONES (estructura recursiva)
+// -----------------------------------------------------
+async function obtenerEvolucionAvanzada(speciesUrl) {
+    const speciesRes = await fetch(speciesUrl);
+    if (!speciesRes.ok) return null;
+    const species = await speciesRes.json();
+
+    const evoRes = await fetch(species.evolution_chain.url);
+    if (!evoRes.ok) return null;
+    const evoData = await evoRes.json();
+
+    async function procesar(node) {
+        const nombre = node.species.name;
+        const info = await obtenerPokemon(nombre);
+        const sprite = info.ok ? info.data.sprites.front_default : "";
+        const children = await Promise.all(node.evolves_to.map(e => procesar(e)));
+        return { name: nombre, sprite, children };
+    }
+
+    return procesar(evoData.chain);
+}
+
+// -----------------------------------------------------
+// RENDERIZADO EVOLUCIONES (clicable)
+// -----------------------------------------------------
+function renderEvoluciones(nodo) {
+    function card(p) {
+        const safeName = p.name.replace(/'/g, "\\'");
+        return `
+            <div class="ev-card" onclick="mostrarDatosDesdeEvolucion('${safeName}')">
+                <img src="${p.sprite || ''}" alt="${p.name}">
+                <span>${p.name.toUpperCase()}</span>
+            </div>
+        `;
+    }
+
+    if (!nodo) return "<p>No hay evolución</p>";
+
+    if (!nodo.children || nodo.children.length === 0) return `<div class="ev-single">${card(nodo)}</div>`;
+
+    if (nodo.children.length === 1) {
+        return `
+            <div class="ev-line" style="display:flex;align-items:center;gap:12px;">
+                ${card(nodo)}
+                <span class="flecha">→</span>
+                ${renderEvoluciones(nodo.children[0])}
+            </div>
+        `;
+    }
+
+    return `
+        <div class="ev-ramificada" style="display:flex;align-items:flex-start;gap:12px;">
+            ${card(nodo)}
+            <span class="flecha">→</span>
+            <div class="ev-ramas" style="display:flex;flex-wrap:wrap;gap:10px;">
+                ${nodo.children.map(ch => card(ch)).join("")}
+            </div>
+        </div>
+    `;
+}
+
+// -----------------------------------------------------
+// OBTENER SPRITE DE POKÉMON (para habilidades)
+// -----------------------------------------------------
+async function obtenerPokemonSimple(url) {
+    const clave = url.split("/").filter(Boolean).pop();
+    const res = await fetchConCache(url, `pokemon-${clave}`);
+    if (!res.ok) return { name: clave, sprite: "", fromCache: false };
+    return { name: res.data.name, sprite: res.data.sprites.front_default, fromCache: res.source === "cache" };
+}
+
+// -----------------------------------------------------
+// RENDER HABILIDAD
+// -----------------------------------------------------
+async function renderHabilidad(habilidadData) {
+    const ability = habilidadData.data;
+    const badgeFrom = habilidadData.source === "api" ? "⚡ Datos desde API" : "💾 Desde Cache";
+    const effectEntry = ability.effect_entries.find(e => e.language.name === "en");
+    const descripcion = effectEntry ? effectEntry.effect : "Sin descripción";
+
+    const pokemonPromises = ability.pokemon.map(async p => {
+        const info = await obtenerPokemonSimple(p.pokemon.url);
+        return { ...info, isHidden: p.is_hidden };
+    });
+
+    const pokemonList = await Promise.all(pokemonPromises);
+
+    const html = `
+        <div class="card">
+            <div id="badge" class="badge" style="background:${habilidadData.source === "api" ? "#007bff" : "#28a745"}">${badgeFrom}</div>
+            <h2>${ability.name.toUpperCase()}</h2>
+
+            <div class="box-description">
+                <strong>EFECTO</strong>
+                <p>${descripcion}</p>
+            </div>
+
+            <h3>POKÉMON CON ESTA HABILIDAD (${pokemonList.length})</h3>
+            <div class="pokemon-grid">
+                ${pokemonList.map(p => `
+                    <div class="poke-card">
+                        <img src="${p.sprite}" alt="${p.name}">
+                        <span>${p.name.toUpperCase()}</span>
+                        ${p.isHidden ? '<small>(oculta 🔒)</small>' : ''}
+                        <small style="color:gray">[${p.fromCache ? 'Cache' : 'API'}]</small>
+                    </div>
+                `).join("")}
+            </div>
+        </div>
+    `;
+
+    showResultHtml(html);
+}
+
+// -----------------------------------------------------
+// FUNCIÓN PRINCIPAL UNIFICADA
+// -----------------------------------------------------
+async function buscar() {
+    const raw = document.getElementById("search") ? document.getElementById("search").value : "";
+    const entrada = sanitizeInput(raw);
+    const selectTipo = document.querySelector(".div-nav select");
+    const tipo = selectTipo ? selectTipo.value : "POKÉMON";
+
+    if (!entrada) {
+        showMessage("Escribe un nombre o id válido.");
+        return;
+    }
+
+    showMessage("Cargando...");
+
+    if (tipo === "POKÉMON") {
+        await mostrarDatos();
+    } else if (tipo === "HABILIDAD") {
+        try {
+            const resultado = await obtenerHabilidad(entrada);
+            if (!resultado.ok) {
+                showMessage("Habilidad no encontrada (" + (resultado.error || "error") + ")");
+                return;
+            }
+            await renderHabilidad(resultado);
+        } catch (err) {
+            console.error("Error mostrar habilidad:", err);
+            showMessage("Ocurrió un error. Revisa la consola.");
+        }
+    } else {
+        showMessage("Selecciona POKÉMON o HABILIDAD.");
+    }
+}
+
+// -----------------------------------------------------
+// CARGA DEL DOM Y EVENTOS
+// -----------------------------------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("btn");
+    const searchInput = document.getElementById("search");
+
+    if (btn) btn.addEventListener("click", buscar);
+    if (searchInput) searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") buscar();
+    });
+    if (searchInput) searchInput.focus();
+});
+
+// -----------------------------------------------------
+// FUNCION PARA CLIC EN EVOLUCIONES (global)
+// -----------------------------------------------------
+async function mostrarDatosDesdeEvolucion(nombre) {
+    const inp = document.getElementById("search");
+    if (inp) inp.value = nombre;
+    await buscar();
+}

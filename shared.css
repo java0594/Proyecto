@@ -264,7 +264,7 @@ button:hover {
     border: 4px solid var(--color-primary);
     box-shadow: 6px 6px 0px var(--color-primary);
     text-align: center;
-    width: 40vmin;
+    width: 80vmin;
     height: 80vmin;
     height: auto;
 }
@@ -354,4 +354,146 @@ ul {
     height: 100%;
     background: var(--color-btn-cyan);
     transition: width 0.4s ease;
+}
+
+
+.ev-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ev-ramificada {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ev-ramas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-left: 5px;
+}
+
+.ev-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    width: 110px;
+    background: #e8e8e8;
+    border: 2px solid #000;
+    cursor: pointer;
+    transition: transform .2s;
+}
+
+.ev-card:hover {
+    transform: scale(1.05);
+    background: #ffe68a;
+}
+
+.ev-card img {
+    width: 70px;
+}
+
+.flecha {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+/* ------------------- Carta principal ------------------- */
+.card {
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 8px;
+    padding: 16px;
+    max-width: 600px;
+    margin: 20px auto;
+    font-family: 'Arial', sans-serif;
+}
+
+.card h2 {
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card #badge {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #fff;
+}
+
+/* ------------------- Caja de descripción ------------------- */
+.box-description {
+    background: #e0e0e0;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.box-description strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* ------------------- Grid de Pokémon ------------------- */
+.pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 por fila */
+    gap: 10px; /* espacio entre cajas */
+    max-height: 400px;
+    overflow-y: auto; /* scroll vertical si hay muchos */
+    padding-right: 4px; /* espacio para scroll */
+}
+
+/* ------------------- Caja individual de Pokémon ------------------- */
+.poke-card {
+    background: #f0f0f0;
+    border: 2px solid #000;
+    border-radius: 6px;
+    padding: 8px;
+    text-align: center;
+    font-size: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.poke-card img {
+    width: 64px;  /* tamaño uniforme del sprite */
+    height: 64px;
+    object-fit: contain;
+    margin-bottom: 6px;
+}
+
+.poke-card:hover {
+    background: #6fd7f1; /* color hover similar al que muestras */
+    transform: translateY(-4px);
+}
+
+.poke-card small {
+    display: block;
+    color: #666;
+    font-size: 10px;
+}
+
+/* Scroll estético */
+.pokemon-grid::-webkit-scrollbar {
+    width: 8px;
+}
+
+.pokemon-grid::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 4px;
+}
+
+.pokemon-grid::-webkit-scrollbar-track {
+    background: #f0f0f0;
 }
