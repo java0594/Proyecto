@@ -497,3 +497,51 @@ ul {
 .pokemon-grid::-webkit-scrollbar-track {
     background: #f0f0f0;
 }
+
+.no-favs-card {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    font-size: 20px;
+}
+
+.fav-card {
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    width: 160px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.15);
+}
+
+.fav-card img {
+    width: 100px;
+    height: 100px;
+}
+
+.btn-remove {
+    margin-top: 10px;
+    padding: 6px;
+    background: #ff4444;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-remove-all {
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 100%;
+    background: #b30000;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.types {
+    margin: 4px 0;
+}
