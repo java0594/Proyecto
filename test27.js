@@ -1,0 +1,574 @@
+// =====================================================
+// test27.js
+// =====================================================
+const CACHE_TTL = 10 * 60 * 1000; // 10 min
+
+// -----------------------------------------------------
+// HELPERS
+// -----------------------------------------------------
+function sanitizeInput(v) {
+    return v ? String(v).trim() : "";
+}
+
+function showResultHtml(html) {
+    const r = document.getElementById("result");
+    if (r) r.innerHTML = html;
+}
+
+function showMessage(msg) {
+    showResultHtml(`<p>${msg}</p>`);
+}
+
+function safeArr(a) {
+    return Array.isArray(a) ? a : [];
+}
+
+// -----------------------------------------------------
+// CACHE KEYS
+// -----------------------------------------------------
+const pokemonCacheKey = (v) => `pokemon-${String(v).trim().toLowerCase()}`;
+const abilityCacheKey = (v) => `ability-${String(v).trim().toLowerCase()}`;
+
+// -----------------------------------------------------
+// FETCH CON CACHE (para búsquedas reales)
+// -----------------------------------------------------
+async function fetchConCache(url, key, tipo = "pokemon") {
+    // 1) cache
+    try {
+        const raw = localStorage.getItem(key);
+        if (raw) {
+            const obj = JSON.parse(raw);
+            if (Date.now() - obj.timestamp < CACHE_TTL) {
+                return { ok: true, source: "cache", data: obj.data };
+            }
+        }
+    } catch {
+        localStorage.removeItem(key);
+    }
+
+    // 2) api
+    let res;
+    try {
+        res = await fetch(url);
+    } catch (e) {
+        return { ok: false, error: `Network error: ${e.message}` };
+    }
+    if (!res.ok) return { ok: false, error: `HTTP ${res.status}` };
+
+    let data;
+    try {
+        data = await res.json();
+    } catch (e) {
+        return { ok: false, error: `JSON parse error: ${e.message}` };
+    }
+
+    // 3) normalizar
+    let essential;
+    if (tipo === "pokemon") {
+        essential = {
+            id: data.id,
+            name: data.name,
+            sprite: data.sprites.front_default,
+            types: data.types.map((t) => t.type.name),
+            abilities: data.abilities.map((a) => ({
+                name: a.ability.name,
+                is_hidden: a.is_hidden,
+            })),
+            stats: data.stats.map((s) => ({
+                name: s.stat.name,
+                base_stat: s.base_stat,
+            })),
+            speciesUrl: data.species.url,
+        };
+    } else if (tipo === "ability") {
+        const effectEntry = data.effect_entries.find((e) => e.language.name === "en");
+        essential = {
+            id: data.id,
+            name: data.name,
+            description: effectEntry ? effectEntry.effect : "Sin descripción",
+            pokemon: data.pokemon.map((p) => ({
+                name: p.pokemon.name,
+                url: p.pokemon.url,
+                is_hidden: p.is_hidden,
+            })),
+        };
+    } else {
+        essential = data;
+    }
+
+    // 4) guardar cache
+    try {
+        localStorage.setItem(key, JSON.stringify({ timestamp: Date.now(), data: essential }));
+    } catch { }
+
+    return { ok: true, source: "api", data: essential };
+}
+
+// -----------------------------------------------------
+// FETCH DIRECTO (sin cache) - útil para sprites en habilidad y evoluciones
+// -----------------------------------------------------
+async function fetchDirect(url) {
+    try {
+        const res = await fetch(url);
+        if (!res.ok) return { ok: false, error: `HTTP ${res.status}` };
+        const data = await res.json();
+        return { ok: true, data };
+    } catch (e) {
+        return { ok: false, error: `Network error: ${e.message}` };
+    }
+}
+
+// -----------------------------------------------------
+// API
+// -----------------------------------------------------
+async function obtenerPokemon(input) {
+    const key = sanitizeInput(input).toLowerCase();
+    const url = `https://pokeapi.co/api/v2/pokemon/${key}`;
+    return fetchConCache(url, pokemonCacheKey(key), "pokemon");
+}
+
+async function obtenerHabilidad(input) {
+    const key = sanitizeInput(input).toLowerCase();
+    const url = `https://pokeapi.co/api/v2/ability/${key}`;
+    return fetchConCache(url, abilityCacheKey(key), "ability");
+}
+
+// Para la lista de habilidad: sprite SIN cache
+async function obtenerSpriteSinCache(pokemonUrl) {
+    const r = await fetchDirect(pokemonUrl);
+    return r.ok ? (r.data.sprites?.front_default || "") : "";
+}
+
+// -----------------------------------------------------
+// HISTÓRICO
+// -----------------------------------------------------
+function getHistorico() {
+    try {
+        return JSON.parse(localStorage.getItem("historico") || "[]");
+    } catch {
+        return [];
+    }
+}
+function setHistorico(arr) {
+    localStorage.setItem("historico", JSON.stringify(arr));
+}
+function guardarEnHistorico(p) {
+    const h = getHistorico();
+    if (!h.some((x) => x.id === p.id)) {
+        h.push({ id: p.id, name: p.name, sprite: p.sprite, types: p.types });
+        setHistorico(h);
+    }
+}
+function eliminarDeHistorico(id) {
+    setHistorico(getHistorico().filter((p) => p.id !== id));
+}
+function limpiarHistorico() {
+    localStorage.removeItem("historico");
+}
+
+// -----------------------------------------------------
+// FAVORITOS
+// -----------------------------------------------------
+function getFavoritos() {
+    try {
+        return JSON.parse(localStorage.getItem("favoritos") || "[]");
+    } catch {
+        return [];
+    }
+}
+function setFavoritos(arr) {
+    localStorage.setItem("favoritos", JSON.stringify(arr));
+}
+function esFavorito(id) {
+    return getFavoritos().some((f) => f.id === id);
+}
+function toggleFavorito(p) {
+    const favs = getFavoritos();
+    const idx = favs.findIndex((x) => x.id === p.id);
+    if (idx >= 0) favs.splice(idx, 1);
+    else favs.push({ id: p.id, name: p.name, sprite: p.sprite, types: p.types });
+    setFavoritos(favs);
+}
+
+// -----------------------------------------------------
+// EVOLUCIONES
+// -----------------------------------------------------
+async function obtenerEvolucionAvanzada(speciesUrl) {
+    const speciesRes = await fetchDirect(speciesUrl);
+    if (!speciesRes.ok) return null;
+
+    const evoRes = await fetchDirect(speciesRes.data.evolution_chain.url);
+    if (!evoRes.ok) return null;
+
+    async function procesar(node) {
+        const nombre = node.species.name;
+        const pokeRes = await fetchDirect(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
+        const sprite = pokeRes.ok ? pokeRes.data.sprites.front_default : "";
+        const children = await Promise.all(node.evolves_to.map((e) => procesar(e)));
+        return { name: nombre, sprite, children };
+    }
+
+    return procesar(evoRes.data.chain);
+}
+
+function renderEvoluciones(nodo) {
+    function card(p) {
+        const safeName = p.name.replace(/'/g, "\\'");
+        return `
+      <div class="ev-card" onclick="mostrarDatosDesdeEvolucion('${safeName}'); event.stopPropagation();">
+        <img src="${p.sprite || ""}" alt="${p.name}">
+        <span>${p.name.toUpperCase()}</span>
+      </div>
+    `;
+    }
+
+    if (!nodo) return "<p>No hay evoluciones</p>";
+    if (!nodo.children || nodo.children.length === 0) return `<div class="ev-single">${card(nodo)}</div>`;
+
+    if (nodo.children.length === 1) {
+        return `
+      <div class="ev-line" style="display:flex;align-items:center;gap:12px;">
+        ${card(nodo)}
+        <span class="flecha">→</span>
+        ${renderEvoluciones(nodo.children[0])}
+      </div>
+    `;
+    }
+
+    return `
+    <div class="ev-ramificada" style="display:flex;align-items:flex-start;gap:12px;">
+      ${card(nodo)}
+      <span class="flecha">→</span>
+      <div class="ev-ramas" style="display:flex;flex-wrap:wrap;gap:10px;">
+        ${nodo.children.map((ch) => card(ch)).join("")}
+      </div>
+    </div>
+  `;
+}
+
+// -----------------------------------------------------
+// RENDER POKÉMON (detalle)
+// -----------------------------------------------------
+async function mostrarPokemonInterno(entrada) {
+    showMessage("Cargando Pokémon...");
+
+    const resultado = await obtenerPokemon(entrada);
+    if (!resultado.ok) {
+        showMessage("Pokémon no encontrado (" + (resultado.error || "error") + ")");
+        return;
+    }
+
+    const pokemon = resultado.data;
+    guardarEnHistorico(pokemon);
+
+    let evolucion = null;
+    try {
+        evolucion = await obtenerEvolucionAvanzada(pokemon.speciesUrl);
+    } catch { }
+
+    const htmlEvo = evolucion ? renderEvoluciones(evolucion) : "<p>No hay evoluciones</p>";
+
+    showResultHtml(`
+    <div class="card">
+      <div id="badge" class="badge" style="background:${resultado.source === "api" ? "#007bff" : "#28a745"}">
+        ${resultado.source === "api" ? "⚡ Datos desde API" : "💾 Desde Cache"}
+      </div>
+
+      <h2>#${pokemon.id} ${pokemon.name.toUpperCase()}</h2>
+
+      <div class="box">
+        <img class="sprite" src="${pokemon.sprite}" alt="${pokemon.name}">
+      </div>
+
+      <h3>Tipos</h3>
+      ${pokemon.types.map((t) => `<span class="label">${t}</span>`).join("")}
+
+      <h3>Habilidades</h3>
+      ${pokemon.abilities
+            .map(
+                (a) =>
+                    `<span class="label-habilidades ${a.is_hidden ? "label-habilidades-oculta" : ""}">
+              ${a.name}${a.is_hidden ? " (Oculta 🔒)" : ""}
+            </span>`
+            )
+            .join("")}
+
+      <h3>Estadísticas</h3>
+      <ul class="stats-list">
+        ${pokemon.stats
+            .map(
+                (s) => `
+          <li class="stat-row">
+            <span class="stat-name">${s.name}</span>
+            <div class="stat-bar"><div class="stat-fill" style="width:${s.base_stat / 3}%;"></div></div>
+            <span class="stat-value">${s.base_stat}</span>
+          </li>
+        `
+            )
+            .join("")}
+      </ul>
+
+      <h3>Favoritos</h3>
+      <button id="btn-fav" class="btn-white">
+        ⭐ ${esFavorito(pokemon.id) ? "Quitar de favoritos" : "Agregar a favoritos"}
+      </button>
+
+      <h3>Evoluciones</h3>
+      <div class="evolutions">${htmlEvo}</div>
+    </div>
+  `);
+
+    document.getElementById("btn-fav").onclick = () => {
+        toggleFavorito(pokemon);
+        // refrescar texto del botón
+        mostrarPokemonInterno(pokemon.name);
+    };
+}
+
+// -----------------------------------------------------
+// RENDER HABILIDAD (lista sin cache + click)
+// -----------------------------------------------------
+async function mostrarHabilidadInterna(entrada) {
+    showMessage("Cargando Habilidad...");
+
+    const resultado = await obtenerHabilidad(entrada);
+    if (!resultado.ok) {
+        showMessage("Habilidad no encontrada (" + (resultado.error || "error") + ")");
+        return;
+    }
+
+    const ability = resultado.data;
+
+    // Lista de pokemon + sprite SIN cache (no ensucia localStorage)
+    const pokemonList = await Promise.all(
+        ability.pokemon.map(async (p) => {
+            const sprite = await obtenerSpriteSinCache(p.url);
+            return { name: p.name, sprite, isHidden: p.is_hidden };
+        })
+    );
+
+    showResultHtml(`
+    <div class="card">
+      <div id="badge" class="badge" style="background:${resultado.source === "api" ? "#007bff" : "#28a745"}">
+        ${resultado.source === "api" ? "⚡ Datos desde API" : "💾 Desde Cache"}
+      </div>
+
+      <h2>${ability.name.toUpperCase()}</h2>
+
+      <div class="box-description">
+        <strong>EFECTO</strong>
+        <p>${ability.description}</p>
+      </div>
+
+      <h3>POKÉMON CON ESTA HABILIDAD (${pokemonList.length})</h3>
+
+      <div class="pokemon-grid">
+        ${pokemonList
+            .map(
+                (p) => `
+          <div class="poke-card ability-card" data-name="${p.name}">
+            <img src="${p.sprite}" alt="${p.name}">
+            <span>${p.name.toUpperCase()}</span>
+            ${p.isHidden ? "<small>(oculta 🔒)</small>" : ""}
+          </div>
+        `
+            )
+            .join("")}
+      </div>
+    </div>
+  `);
+
+    // Click -> ir al detalle del pokémon
+    document.querySelectorAll(".ability-card").forEach((card) => {
+        card.addEventListener("click", () => {
+            const name = card.dataset.name;
+            const input = document.getElementById("search");
+            const select = document.getElementById("tipoSelect");
+
+            if (select) select.value = "POKÉMON";
+            if (input) input.value = name;
+
+            buscar();
+        });
+    });
+}
+
+// -----------------------------------------------------
+// LANDING HISTÓRICO (con toggle favoritos)
+// -----------------------------------------------------
+function mostrarHistorico() {
+    const h = getHistorico();
+    const r = document.getElementById("result");
+    if (!r) return;
+
+    // Botón limpiar (soporta distintos ids por si cambiaste HTML)
+    const clearBtn =
+        document.getElementById("clearHistorico") ||
+        document.getElementById("clearAll") ||
+        document.getElementById("clearHistory");
+
+    if (h.length === 0) {
+        r.innerHTML = `<div class="card no-favs-card">📜 No hay histórico</div>`;
+        if (clearBtn) clearBtn.style.display = "none";
+        return;
+    }
+
+    if (clearBtn) clearBtn.style.display = "block";
+
+    r.innerHTML = `
+    <div class="pokemon-grid">
+      ${h
+            .slice()
+            .reverse()
+            .map(
+                (p) => `
+        <div class="poke-card">
+          <img src="${p.sprite}" alt="${p.name}">
+          <strong>#${p.id} ${p.name.toUpperCase()}</strong>
+          ${safeArr(p.types).map((t) => `<span class="label">${t}</span>`).join("")}
+
+          <button class="btn-white btn-toggle" data-id="${p.id}">
+            ⭐ ${esFavorito(p.id) ? "Quitar" : "Agregar"}
+          </button>
+
+          <button class="btn-red btn-del" data-id="${p.id}">🗑</button>
+        </div>
+      `
+            )
+            .join("")}
+    </div>
+  `;
+
+    r.querySelectorAll(".btn-toggle").forEach((btn) => {
+        btn.onclick = () => {
+            const id = Number(btn.dataset.id);
+            const poke = h.find((x) => x.id === id);
+            if (!poke) return;
+            toggleFavorito(poke);
+            mostrarHistorico();
+        };
+    });
+
+    r.querySelectorAll(".btn-del").forEach((btn) => {
+        btn.onclick = () => {
+            eliminarDeHistorico(Number(btn.dataset.id));
+            mostrarHistorico();
+        };
+    });
+
+    if (clearBtn) {
+        clearBtn.onclick = () => {
+            if (confirm("¿Eliminar todo el histórico?")) {
+                limpiarHistorico();
+                mostrarHistorico();
+            }
+        };
+    }
+}
+
+// -----------------------------------------------------
+// LANDING FAVORITOS
+// -----------------------------------------------------
+function mostrarFavoritos() {
+    const favs = getFavoritos();
+    const r = document.getElementById("result");
+    if (!r) return;
+
+    const clearBtn = document.getElementById("clearAll") || document.getElementById("clearFavoritos");
+
+    if (favs.length === 0) {
+        r.innerHTML = `<div class="card no-favs-card">❤️ No hay favoritos</div>`;
+        if (clearBtn) clearBtn.style.display = "none";
+        return;
+    }
+
+    if (clearBtn) clearBtn.style.display = "block";
+
+    r.innerHTML = `
+    <div class="pokemon-grid">
+      ${favs
+            .slice()
+            .reverse()
+            .map(
+                (p) => `
+        <div class="poke-card">
+          <img src="${p.sprite}" alt="${p.name}">
+          <strong>#${p.id} ${p.name.toUpperCase()}</strong>
+          ${safeArr(p.types).map((t) => `<span class="label">${t}</span>`).join("")}
+          <button class="btn-red btn-del-fav" data-id="${p.id}">🗑</button>
+        </div>
+      `
+            )
+            .join("")}
+    </div>
+  `;
+
+    r.querySelectorAll(".btn-del-fav").forEach((btn) => {
+        btn.onclick = () => {
+            const id = Number(btn.dataset.id);
+            setFavoritos(getFavoritos().filter((x) => x.id !== id));
+            mostrarFavoritos();
+        };
+    });
+
+    if (clearBtn) {
+        clearBtn.onclick = () => {
+            if (confirm("¿Eliminar todos los favoritos?")) {
+                localStorage.removeItem("favoritos");
+                mostrarFavoritos();
+            }
+        };
+    }
+}
+
+// -----------------------------------------------------
+// BUSCAR (unificado)
+// -----------------------------------------------------
+async function buscar() {
+    const entrada = sanitizeInput(document.getElementById("search")?.value);
+    const tipo = document.getElementById("tipoSelect")?.value;
+
+    if (!entrada) {
+        showMessage("Escribe un valor válido.");
+        return;
+    }
+
+    if (tipo === "HABILIDAD") await mostrarHabilidadInterna(entrada);
+    else await mostrarPokemonInterno(entrada);
+}
+
+// Click en evoluciones
+async function mostrarDatosDesdeEvolucion(nombre) {
+    const inp = document.getElementById("search");
+    const sel = document.getElementById("tipoSelect");
+    if (sel) sel.value = "POKÉMON";
+    if (inp) inp.value = nombre;
+    await buscar();
+}
+window.mostrarDatosDesdeEvolucion = mostrarDatosDesdeEvolucion;
+
+// -----------------------------------------------------
+// DOM READY
+// -----------------------------------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("btn");
+    const searchInput = document.getElementById("search");
+    const tipoSelect = document.getElementById("tipoSelect");
+
+    if (tipoSelect && searchInput) {
+        tipoSelect.addEventListener("change", () => {
+            searchInput.placeholder =
+                tipoSelect.value === "HABILIDAD" ? "NOMBRE DE HABILIDAD..." : "NOMBRE O ID...";
+        });
+    }
+
+    btn?.addEventListener("click", buscar);
+    searchInput?.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") buscar();
+    });
+
+    // Landings
+    const path = window.location.pathname;
+    if (path.includes("historico.html")) mostrarHistorico();
+    if (path.includes("favoritos.html")) mostrarFavoritos();
+});

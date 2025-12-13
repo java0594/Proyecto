@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Histórico Pokémon</title>
+
+    <!-- CSS compartido -->
+    <link rel="stylesheet" href="shared.css">
+</head>
+
+<body>
+
+    <!-- Fondo Pokéball -->
+    <div class="pokeball"></div>
+
+    <main>
+
+        <!-- TÍTULO -->
+        <div style="display:flex; justify-content:center; margin-bottom:20px;">
+            <div class="title">
+                📜 HISTÓRICO
+            </div>
+        </div>
+
+        <!-- NAVEGACIÓN -->
+        <nav style="margin-bottom:20px;">
+            <a href="index.html" class="btn-white">🔍 BUSCAR</a>
+            <a href="favoritos.html" class="btn-white">❤️ FAVORITOS</a>
+            <a href="vs.html" class="btn-white-small">⚔️ VS</a>
+        </nav>
+
+        <!-- BOTÓN LIMPIAR HISTÓRICO -->
+        <div style="display:flex; justify-content:center; margin-bottom:20px;">
+            <button id="clearHistorico" class="btn-red">
+                🗑 BORRAR HISTÓRICO
+            </button>
+        </div>
+
+        <!-- RESULTADOS HISTÓRICO -->
+        <div id="result"></div>
+
+    </main>
+
+    <!-- JS PRINCIPAL -->
+    <script src="test27.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,664 @@
+/* LAYOUT */
+.app {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* HEADER */
+.header {
+    background: #42ebe8;
+    border: 4px solid black;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.header-title {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.nav {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* HISTORICO LIST */
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.history-card {
+    background: white;
+    border: 4px solid black;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.history-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.history-left img {
+    width: 64px;
+    height: 64px;
+    image-rendering: pixelated;
+}
+
+.history-info strong {
+    font-size: 18px;
+}
+
+/* ACTIONS */
+.history-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icon {
+    border: 3px solid black;
+    background: #ffdede;
+    padding: 6px 10px;
+    cursor: pointer;:root {
+    /* Colores principales */
+    --color-bg: #f5e6d3;
+    /* Fondo beige */
+    --color-primary: #2d2d2d;
+    /* Negro/Gris oscuro */
+    --color-accent: #ffcc00;
+    /* Amarillo Pokémon */
+    --color-secondary: #ff6b6b;
+    /* Rojo coral */
+
+    /* Colores de estado */
+    --color-success: #4ecdc4;
+    /* Verde agua */
+    --color-error: #ff6b6b;
+    /* Rojo */
+    --color-warning: #ffa500;
+    /* Naranja */
+
+    /*Botones*/
+    --color-btn-cyan: #42ebe8;
+    --color-btn-red: #fe3636;
+    --color-btn-yellow: #ffe260;
+
+
+    /* Badges de origen */
+    --color-api: #4ecdc4;
+    /* Verde agua - datos de API */
+    --color-cache: #ffcc00;
+    /* Amarillo - datos cacheados */
+    --color-expired: #ffa500;
+    /* Naranja - caché expirado */
+
+    /* Bordes y sombras */
+    --border-width: 4px;
+    --border-color: #2d2d2d;
+    --shadow: 6px 6px 0px #2d2d2d;
+
+    /* Tipografía */
+    --font-family: 'Courier New', monospace;
+}
+
+body {
+    background-color: white;
+    background-image: radial-gradient(circle, black 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-repeat: repeat;
+    min-height: 100vh;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    font-family: var(--font-family);
+    position: relative;
+    overflow: auto;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.div-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.pokeball {
+    height: 60vmin;
+    width: 60vmin;
+    border-radius: 50%;
+    border: 4vmin solid black;
+    transform: rotate(-15deg);
+    background-image:
+        radial-gradient(rgba(255, 255, 255, 0.6) 20%,
+            rgba(255, 255, 255, 0.6) 20%,
+            rgba(0, 0, 0, 1) 20%,
+            rgba(0, 0, 0, 1) 30%,
+            transparent 30%,
+            transparent),
+        linear-gradient(rgba(255, 0, 0, 0.6) 46%,
+            black 46%,
+            black 54%,
+            rgba(255, 255, 255, 0.6) 54%);
+    -webkit-mask:
+        radial-gradient(circle, transparent 17%, black 19%);
+    mask:
+        radial-gradient(circle, transparent 17%, black 19%);
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.title {
+    background-color: var(--color-btn-cyan);
+    height: 80px;
+    width: 500px;
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    font-size: xx-large;
+    transform: rotate(-13deg);
+}
+
+.btn-white {
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    height: 50px;
+    width: 180px;
+    font-size: larger;
+}
+
+.btn-white-small {
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    height: 50px;
+    width: 100px;
+    font-size: larger;
+}
+
+.btn-cyan {
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    background-color: var(--color-btn-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    height: 50px;
+    width: 180px;
+    font-size: larger;
+}
+
+.btn-red {
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    background-color: var(--color-btn-red);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    height: 50px;
+    width: 180px;
+    font-size: larger;
+}
+
+.btn-yellow {
+    border: 4px solid var(--color-primary);
+    background-color: var(--color-btn-yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    height: 50px;
+    width: 180px;
+    font-size: larger;
+}
+
+input {
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-weight: bold;
+    height: 50px;
+    width: 360px;
+    font-size: larger;
+}
+
+
+
+/*.pokeball {
+    height: 50vmin;
+    width: 50vmin;
+    border-radius: 50%;
+    background-color: red;
+    border: 3.75vmin solid black;
+    background-image:
+        radial-gradient(white 20%, white 20%, black 20%, black 30%, transparent 30%, transparent),
+        linear-gradient(red 46%, black 46%, black 54%, white 54%);
+    transform: rotate(-15deg);
+    opacity: 0.6;
+
+
+
+    -webkit-mask:
+        radial-gradient(circle, transparent 15%, black 16%);
+    mask:
+        radial-gradient(circle, transparent 15%, black 16%);
+}*/
+
+.pokeball-funciona-pero-no-entiendo {
+    aspect-ratio: 1 / 1;
+    height: min(80vmin, 600px);
+    /* tamaño máximo opcional */
+    width: auto;
+    /* lo maneja el aspect ratio */
+
+    border-radius: 50%;
+
+    /* SOLUCIÓN → borde estable */
+    border: clamp(8px, 3vmin, 24px) solid black;
+
+    transform: rotate(-15deg);
+
+    background-image:
+        radial-gradient(rgba(255, 255, 255, 0.6) 20%,
+            rgba(255, 255, 255, 0.6) 20%,
+            rgba(0, 0, 0, 1) 20%,
+            rgba(0, 0, 0, 1) 30%,
+            transparent 30%,
+            transparent),
+        linear-gradient(rgba(255, 0, 0, 0.6) 46%,
+            black 46%,
+            black 54%,
+            rgba(255, 255, 255, 0.6) 54%);
+
+    -webkit-mask: radial-gradient(circle, transparent 17%, black 19%);
+    mask: radial-gradient(circle, transparent 17%, black 19%);
+
+    pointer-events: none;
+}
+
+h1 {
+    text-align: center;
+}
+
+button:hover {
+    background: #e63e3e;
+}
+
+.card {
+    margin-top: 20px;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    text-align: center;
+    width: 80vmin;
+    height: 80vmin;
+    height: auto;
+}
+
+.sprite {
+    width: 150px;
+    image-rendering: pixelated;
+}
+
+.label {
+    display: inline-block;
+    margin: 3px;
+    padding: 5px 12px;
+    border: 4px solid var(--color-primary);
+    background-color: var(--color-primary);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.label-habilidades {
+    display: inline-block;
+    margin: 10px;
+    padding: 5px 12px;
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    background-color: greenyellow;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.label-habilidades-oculta {
+    display: inline-block;
+    margin: 10px;
+    padding: 5px 12px;
+    border: 4px solid var(--color-primary);
+    box-shadow: 6px 6px 0px var(--color-primary);
+    background-color: var(--color-accent);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.evolutions img {
+    width: 90px;
+    margin: 10px;
+    image-rendering: pixelated;
+}
+
+/* .box{
+    background-color: black; 
+    width: 200px;
+    height: 200px;
+}  */
+
+.stats-list {
+    list-style: none;
+    padding: 0;
+}
+
+.stat-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.stat-name {
+    width: 90px;            /* Ajusta según quieras */
+    text-transform: capitalize;
+    font-weight: bold;
+}
+
+.stat-bar {
+    flex: 1;                /* Ocupa todo el espacio restante */
+    height: 15px;
+    background: white;
+    overflow: hidden;
+    border: 4px solid var(--color-primary);
+}
+
+.stat-fill {
+    height: 100%;
+    background: var(--color-btn-cyan);
+    transition: width 0.4s ease;
+}
+
+
+.ev-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ev-ramificada {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ev-ramas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-left: 5px;
+}
+
+.ev-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    width: 110px;
+    background: #e8e8e8;
+    border: 2px solid #000;
+    cursor: pointer;
+    transition: transform .2s;
+}
+
+.ev-card:hover {
+    transform: scale(1.05);
+    background: #ffe68a;
+}
+
+.ev-card img {
+    width: 70px;
+}
+
+.flecha {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+/* ------------------- Carta principal ------------------- */
+.card {
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 8px;
+    padding: 16px;
+    max-width: 600px;
+    margin: 20px auto;
+    font-family: 'Arial', sans-serif;
+}
+
+.card h2 {
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card #badge {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #fff;
+}
+
+/* ------------------- Caja de descripción ------------------- */
+.box-description {
+    background: #e0e0e0;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.box-description strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* ------------------- Grid de Pokémon ------------------- */
+.pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 por fila */
+    gap: 10px; /* espacio entre cajas */
+    max-height: 400px;
+    overflow-y: auto; /* scroll vertical si hay muchos */
+    padding-right: 4px; /* espacio para scroll */
+}
+
+/* ------------------- Caja individual de Pokémon ------------------- */
+.poke-card {
+    background: #f0f0f0;
+    border: 2px solid #000;
+    border-radius: 6px;
+    padding: 8px;
+    text-align: center;
+    font-size: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.poke-card img {
+    width: 64px;  /* tamaño uniforme del sprite */
+    height: 64px;
+    object-fit: contain;
+    margin-bottom: 6px;
+}
+
+.poke-card:hover {
+    background: #6fd7f1; /* color hover similar al que muestras */
+    transform: translateY(-4px);
+}
+
+.poke-card small {
+    display: block;
+    color: #666;
+    font-size: 10px;
+}
+
+/* Scroll estético */
+.pokemon-grid::-webkit-scrollbar {
+    width: 8px;
+}
+
+.pokemon-grid::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 4px;
+}
+
+.pokemon-grid::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+.no-favs-card {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    font-size: 20px;
+}
+
+.fav-card {
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    width: 160px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.15);
+}
+
+.fav-card img {
+    width: 100px;
+    height: 100px;
+}
+
+.btn-remove {
+    margin-top: 10px;
+    padding: 6px;
+    background: #ff4444;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-remove-all {
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 100%;
+    background: #b30000;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.types {
+    margin: 4px 0;
+}
+
+    font-size: 16px;
+}
+
+.btn-trash {
+    background: #ff4d4d;
+}
+
+/* FOOTER */
+.footer-actions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* EMPTY */
+.empty-state {
+    text-align: center;
+    padding: 40px;
+}
+
+/* ================= HISTÓRICO FAVORITOS ================= */
+
+.fav-historico-card {
+    position: relative;
+}
+
+.fav-historico-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.btn-historico-fav,
+.btn-historico-delete {
+    border: 2px solid black;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px 8px;
+}
+
+.btn-historico-delete {
+    background: var(--color-btn-red);
+    color: white;
+}

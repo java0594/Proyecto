@@ -1,42 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokémon Favoritos</title>
-    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="shared.css" />
 </head>
 
 <body>
     <div class="pokeball"></div>
-    <div>
-        <div>
-            <button class="title">FAVORITOS POKÉMON</button>
-        </div>
-        <div>
-            <nav>
-                <a href="index.html"><button class="btn-white">🏠 INICIO</button></a>
-                <a href="historico.html"><button class="btn-white">📜 HISTÓRICO</button></a>
-                <a href="vs.html"><button class="btn-white-small">⚔️ VS</button></a>
+
+    <main class="app">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-title">
+                ❤️ <span>FAVORITOS</span>
+            </div>
+
+            <nav class="nav">
+                <a href="index.html" class="btn-white">🔍 BUSCAR</a>
+                <a href="historico.html" class="btn-white">📜 HISTÓRICO</a>
+                <a href="vs.html" class="btn-white">⚔️ VS</a>
+                <a href="favoritos.html" class="btn-cyan">❤️ FAVORITOS</a>
             </nav>
+        </header>
+
+        <!-- CONTENIDO -->
+        <section id="result" class="history-list"></section>
+
+        <!-- FOOTER ACTION -->
+        <div class="footer-actions">
+            <button id="clearAll" class="btn-red">🗑 LIMPIAR TODO</button>
         </div>
 
-        <!-- Contenedor donde se renderizan los favoritos -->
-        <div id="result"></div>
-    </div>
+    </main>
 
-    <!-- JS principal -->
-    <script src="test16.js"></script>
-
-    <script>
-        // Solo mostrar favoritos si estamos en favoritos.html
-        document.addEventListener("DOMContentLoaded", () => {
-            if (window.location.pathname.includes("favoritos.html")) {
-                mostrarFavoritos();
-            }
-        });
-    </script>
+    <!-- JS ÚNICO -->
+    <script src="test27.js"></script>
 </body>
 
 </html>
