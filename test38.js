@@ -198,34 +198,57 @@ async function obtenerEvolucionAvanzada(speciesUrl) {
   if (!evoRes.ok) return null
 
   async function procesar(node) {
-    const nombre = node.species.name
-    const pokeRes = await fetchDirect(`https://pokeapi.co/api/v2/pokemon/${nombre}`)
+    const name = node.species.name
+    const pokeRes = await fetchDirect(`https://pokeapi.co/api/v2/pokemon/${name}`)
     const sprite = pokeRes.ok ? pokeRes.data.sprites.front_default : ''
-    const children = await Promise.all(node.evolves_to.map(e => procesar(e)))
-    return {name: nombre, sprite, children}
+    const children = await Promise.all(
+      node.evolves_to.map(e => procesar(e))
+    )
+
+    return { name, sprite, children }
   }
 
   return procesar(evoRes.data.chain)
 }
 
+// -----------------------------------------------------
+// RENDER EVOLUCIONES
+// -----------------------------------------------------
 function renderEvoluciones(nodo) {
+
   function card(p) {
     const safeName = String(p.name).replace(/'/g, "\\'")
     return `
-      <div class="ev-card" onclick="mostrarDatosDesdeEvolucion('${safeName}'); event.stopPropagation();">
+      <div class="ev-card"
+           onclick="mostrarDatosDesdeEvolucion('${safeName}'); event.stopPropagation();">
         <img src="${p.sprite || ''}" alt="${p.name}">
-        <span>${p.name.toUpperCase()}</span>
+        <span class="ev-name">${p.name.toUpperCase()}</span>
       </div>
     `
   }
 
-  if (!nodo) return '<p>No hay evoluciones</p>'
-  if (!nodo.children || nodo.children.length === 0)
-    return `<div class="ev-single">${card(nodo)}</div>`
+  if (!nodo) {
+    return `<p>No hay evoluciones</p>`
+  }
 
+  // -----------------------------
+  // SIN EVOLUCIÓN
+  // -----------------------------
+  if (!nodo.children || nodo.children.length === 0) {
+    return `
+      <div class="ev-single">
+        ${card(nodo)}
+      </div>
+    `
+  }
+
+  // -----------------------------
+  // EVOLUCIÓN LINEAL
+  // A → B → C
+  // -----------------------------
   if (nodo.children.length === 1) {
     return `
-      <div class="ev-lineal" ">
+      <div class="ev-lineal">
         ${card(nodo)}
         <span class="flecha">→</span>
         ${renderEvoluciones(nodo.children[0])}
@@ -233,16 +256,28 @@ function renderEvoluciones(nodo) {
     `
   }
 
+  // -----------------------------
+  // EVOLUCIÓN RAMIFICADA
+  //        A →
+  //  [ B ] [ C ] [ D ] [ E ]
+  // -----------------------------
   return `
-    <div class="ev-ramificada">
-      ${card(nodo)}
-      <span class="flecha">→</span>
-      <div class="ev-ramas" ;">
+    <div class="ev-branch">
+
+      <div class="ev-root">
+        ${card(nodo)}
+        <span class="flecha">→</span>
+      </div>
+
+      <div class="ev-ramas ${nodo.children.length === 2 ? 'ev-ramas-2' : ''}">
         ${nodo.children.map(ch => card(ch)).join('')}
       </div>
+
     </div>
   `
 }
+
+
 
 // -----------------------------------------------------
 // RENDER POKÉMON (detalle)
@@ -288,7 +323,7 @@ async function mostrarPokemonInterno(entrada) {
             ${pokemon.types.map(t => `<span class="label">${t}</span>`).join('')}
         </div>
       <div class="pokemon-abilities">
-      <h3 style="margin-left:10px">Habilidades</h3>
+      <h3 style="margin-left:10px; letter-spacing: 2px;">Habilidades</h3>
       ${pokemon.abilities
         .map(
           a => `
@@ -308,7 +343,7 @@ async function mostrarPokemonInterno(entrada) {
           <li class="stat-row">
             <span class="stat-name">${s.name}</span>
             <div class="stat-bar"><div class="stat-fill" style="width:${
-              s.base_stat / 3
+              (s.base_stat / 250)*100
             }%;"></div></div>
             <!-- <span class="stat-value">${s.base_stat}</span>-->
           </li>
@@ -328,7 +363,7 @@ async function mostrarPokemonInterno(entrada) {
   </div>
       <div class="section-separator"></div>
 
-      <h3>Evoluciones</h3>
+      <h3 style="letter-spacing: 2px;">CADENA DE EVOLUCION</h3>
       <div class="evolutions">${htmlEvo}</div>
     </div>
   `)
@@ -429,30 +464,60 @@ function mostrarHistorico() {
   if (clearBtn) clearBtn.style.display = 'block'
 
   r.innerHTML = `
-    <div class="pokemon-grid">
+    <div class="fav-list">
       ${h
         .slice()
         .reverse()
         .map(
-          p => `
-        <div class="poke-card">
-          <img src="${p.sprite}" alt="${p.name}">
-          <strong>#${p.id} ${p.name.toUpperCase()}</strong>
-          ${safeArr(p.types)
-            .map(t => `<span class="label">${t}</span>`)
-            .join('')}
+  p => `
+    <div class="fav-card">
 
-          <button class="btn-white btn-toggle" data-id="${p.id}">
-            ⭐ ${esFavorito(p.id) ? 'Quitar' : 'Agregar'}
-          </button>
+      <!-- SPRITE -->
+      <div class="sprite-box-small">
+        <img class="sprite-small" src="${p.sprite}" alt="${p.name}">
+      </div>
 
-          <button class="btn-red btn-del" data-id="${p.id}">🗑</button>
+      <!-- INFO -->
+      <div class="fav-info">
+        <strong>#${p.id} ${p.name.toUpperCase()}</strong>
+        <div>
+          ${safeArr(p.types).map(t => `<span class="label">${t}</span>`).join('')}
         </div>
-      `
-        )
-        .join('')}
+      </div>
+
+      <!-- ACCIONES -->
+      <div class="fav-actions">
+        <button 
+          class="btn-fav-heart ${esFavorito(p.id) ? 'active' : ''}"
+          data-id="${p.id}"
+          aria-label="Favorito">
+          ❤️
+        </button>
+
+        <button 
+          class="btn-del-fav"
+          data-id="${p.id}">
+          🗑️
+        </button>
+      </div>
+
     </div>
   `
+)
+}
+    </div>
+  `
+  r.querySelectorAll('.btn-fav-heart').forEach(btn => {
+  btn.onclick = () => {
+    const id = Number(btn.dataset.id)
+    const poke = h.find(x => x.id === id)
+    if (!poke) return
+
+    toggleFavorito(poke)
+    mostrarHistorico() // refresca visual
+  }
+})
+
 
   r.querySelectorAll('.btn-toggle').forEach(btn => {
     btn.onclick = () => {
@@ -464,7 +529,7 @@ function mostrarHistorico() {
     }
   })
 
-  r.querySelectorAll('.btn-del').forEach(btn => {
+  r.querySelectorAll('.btn-del-fav').forEach(btn => {
     btn.onclick = () => {
       eliminarDeHistorico(Number(btn.dataset.id))
       mostrarHistorico()
@@ -489,54 +554,60 @@ function mostrarFavoritos() {
   const r = document.getElementById('result')
   if (!r) return
 
-  const clearBtn = document.getElementById('clearAll') || document.getElementById('clearFavoritos')
-
   if (favs.length === 0) {
     r.innerHTML = `<div class="card no-favs-card">❤️ No hay favoritos</div>`
-    if (clearBtn) clearBtn.style.display = 'none'
     return
   }
 
-  if (clearBtn) clearBtn.style.display = 'block'
-
   r.innerHTML = `
-    <div class="pokemon-grid">
+    <div class="fav-list">
       ${favs
         .slice()
         .reverse()
         .map(
           p => `
-        <div class="poke-card">
-          <img src="${p.sprite}" alt="${p.name}">
-          <strong>#${p.id} ${p.name.toUpperCase()}</strong>
-          ${safeArr(p.types)
-            .map(t => `<span class="label">${t}</span>`)
-            .join('')}
-          <button class="btn-red btn-del-fav" data-id="${p.id}">🗑</button>
+        <div class="fav-card">
+          <div class="sprite-box-small">
+            <img class="sprite-small" src="${p.sprite}" alt="${p.name}">
+            </div>
+
+
+          <div class="fav-info">
+            <strong>#${p.id} ${p.name.toUpperCase()}</strong>
+            <div>
+              ${p.types.map(t => `<span class="label">${t}</span>`).join('')}
+            </div>
+          </div>
+
+          <button class="btn-del-fav" data-id="${p.id}">🗑️</button>
         </div>
       `
         )
         .join('')}
     </div>
+
+    <button id="clearFavoritos" class="btn-clear-favs">
+        🗑️ LIMPIAR TODO
+    </button>
   `
 
   r.querySelectorAll('.btn-del-fav').forEach(btn => {
     btn.onclick = () => {
       const id = Number(btn.dataset.id)
-      setFavoritos(getFavoritos().filter(x => x.id !== id))
+      setFavoritos(getFavoritos().filter(f => f.id !== id))
       mostrarFavoritos()
     }
   })
 
-  if (clearBtn) {
-    clearBtn.onclick = () => {
-      if (confirm('¿Eliminar todos los favoritos?')) {
-        localStorage.removeItem('favoritos')
-        mostrarFavoritos()
-      }
+  document.getElementById('clearFavoritos').onclick = () => {
+    if (confirm('¿Eliminar todos los favoritos?')) {
+      localStorage.removeItem('favoritos')
+      mostrarFavoritos()
     }
   }
 }
+
+
 
 // -----------------------------------------------------
 // BUSCAR (unificado)

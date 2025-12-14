@@ -1,621 +1,782 @@
+button,
+a {
+  all: unset; /* elimina estilos nativos */
+  box-sizing: border-box;
+  display: inline-flex; /* MISMO modelo de caja */
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+/* ======================================================
+   TEST-CSS-01 — BASE BRUTALIST + BÚSQUEDA + NAV
+====================================================== */
+
+/* ===============================
+   VARIABLES
+================================ */
 :root {
-    /* Colores principales */
-    --color-bg: #f5e6d3;
-    /* Fondo beige */
-    --color-primary: #2d2d2d;
-    /* Negro/Gris oscuro */
-    --color-accent: #ffcc00;
-    /* Amarillo Pokémon */
-    --color-secondary: #ff6b6b;
-    /* Rojo coral */
-
-    /* Colores de estado */
-    --color-success: #4ecdc4;
-    /* Verde agua */
-    --color-error: #ff6b6b;
-    /* Rojo */
-    --color-warning: #ffa500;
-    /* Naranja */
-
-    /*Botones*/
-    --color-btn-cyan: #42ebe8;
-    --color-btn-red: #fe3636;
-    --color-btn-yellow: #ffe260;
-
-
-    /* Badges de origen */
-    --color-api: #4ecdc4;
-    /* Verde agua - datos de API */
-    --color-cache: #ffcc00;
-    /* Amarillo - datos cacheados */
-    --color-expired: #ffa500;
-    /* Naranja - caché expirado */
-
-    /* Bordes y sombras */
-    --border-width: 4px;
-    --border-color: #2d2d2d;
-    --shadow: 6px 6px 0px #2d2d2d;
-
-    /* Tipografía */
-    --font-family: 'Courier New', monospace;
-}
-
-body {
-    background-color: white;
-    background-image: radial-gradient(circle, black 1px, transparent 1px);
-    background-size: 20px 20px;
-    background-repeat: repeat;
-    min-height: 100vh;
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
-    font-family: var(--font-family);
-    position: relative;
-    overflow: auto;
-}
-
-nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-
-.div-nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-
-.pokeball {
-    height: 60vmin;
-    width: 60vmin;
-    border-radius: 50%;
-    border: 4vmin solid black;
-    transform: rotate(-15deg);
-    background-image:
-        radial-gradient(rgba(255, 255, 255, 0.6) 20%,
-            rgba(255, 255, 255, 0.6) 20%,
-            rgba(0, 0, 0, 1) 20%,
-            rgba(0, 0, 0, 1) 30%,
-            transparent 30%,
-            transparent),
-        linear-gradient(rgba(255, 0, 0, 0.6) 46%,
-            black 46%,
-            black 54%,
-            rgba(255, 255, 255, 0.6) 54%);
-    -webkit-mask:
-        radial-gradient(circle, transparent 17%, black 19%);
-    mask:
-        radial-gradient(circle, transparent 17%, black 19%);
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    z-index: -1;
-    pointer-events: none;
-}
-
-.title {
-    background-color: var(--color-btn-cyan);
-    height: 80px;
-    width: 500px;
-    border: 4px solid var(--color-primary);
-    box-shadow: 6px 6px 0px var(--color-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-family);
-    font-weight: bold;
-    font-size: xx-large;
-    transform: rotate(-13deg);
-}
-
-.btn-white {
-    border: 4px solid var(--color-primary);
-    box-shadow: 6px 6px 0px var(--color-primary);
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-family);
-    font-weight: bold;
-    height: 50px;
-    width: 180px;
-    font-size: larger;
-}
-
-.btn-white-small {
-    border: 4px solid var(--color-primary);
-    box-shadow: 6px 6px 0px var(--color-primary);
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-family);
-    font-weight: bold;
-    height: 50px;
-    width: 100px;
-    font-size: larger;
-}
-
-.btn-cyan {
-    border: 4px solid var(--color-primary);
-    box-shadow: 6px 6px 0px var(--color-primary);
-    background-color: var(--color-btn-cyan);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-family);
-    font-weight: bold;
-    height: 50px;
-    width: 180px;
-    font-size: larger;
-}
-
-.btn-red {
-    border: 4px solid var(--color-primary);
-    box-shadow: 6px 6px 0px var(--color-primary);
-    background-color: var(--color-btn-red);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-family);
-    font-weight: bold;
-    height: 50px;
-    width: 180px;
-    font-size: larger;
-}
-
-.btn-yellow {
-    border: 4px solid var(--color-primary);
-    background-color: var(--color-btn-yellow);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-family);
-    font-weight: bold;
-    height: 50px;
-    width: 180px;
-    font-size: larger;
-}
-
-input {
-    border: 4px solid var(--color-primary);
-    box-shadow: 6px 6px 0px var(--color-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-family);
-    font-weight: bold;
-    height: 50px;
-    width: 360px;
-    font-size: larger;
-}
-
-
-
-/*.pokeball {
-    height: 50vmin;
-    width: 50vmin;
-    border-radius: 50%;
-    background-color: red;
-    border: 3.75vmin solid black;
-    background-image:
-        radial-gradient(white 20%, white 20%, black 20%, black 30%, transparent 30%, transparent),
-        linear-gradient(red 46%, black 46%, black 54%, white 54%);
-    transform: rotate(-15deg);
-    opacity: 0.6;
-
-
-
-    -webkit-mask:
-        radial-gradient(circle, transparent 15%, black 16%);
-    mask:
-        radial-gradient(circle, transparent 15%, black 16%);
-}*/
-
-.pokeball-funciona-pero-no-entiendo {
-    aspect-ratio: 1 / 1;
-    height: min(80vmin, 600px);
-    /* tamaño máximo opcional */
-    width: auto;
-    /* lo maneja el aspect ratio */
-
-    border-radius: 50%;
-
-    /* SOLUCIÓN → borde estable */
-    border: clamp(8px, 3vmin, 24px) solid black;
-
-    transform: rotate(-15deg);
-
-    background-image:
-        radial-gradient(rgba(255, 255, 255, 0.6) 20%,
-            rgba(255, 255, 255, 0.6) 20%,
-            rgba(0, 0, 0, 1) 20%,
-            rgba(0, 0, 0, 1) 30%,
-            transparent 30%,
-            transparent),
-        linear-gradient(rgba(255, 0, 0, 0.6) 46%,
-            black 46%,
-            black 54%,
-            rgba(255, 255, 255, 0.6) 54%);
-
-    -webkit-mask: radial-gradient(circle, transparent 17%, black 19%);
-    mask: radial-gradient(circle, transparent 17%, black 19%);
-
-    pointer-events: none;
-}
-
-h1 {
-    text-align: center;
-}
-
-button:hover {
-    background: #e63e3e;
-}
-
-
-
-.sprite {
-    width: 150px;
-    image-rendering: pixelated;
-}
-
-.label {
-    display: inline-block;
-    margin: 3px;
-    padding: 5px 12px;
-    border: 4px solid var(--color-primary);
-    background-color: var(--color-primary);
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.label-habilidades {
-    display: inline-block;
-    margin: 10px;
-    padding: 5px 12px;
-    border: 4px solid var(--color-primary);
-    box-shadow: 6px 6px 0px var(--color-primary);
-    background-color: greenyellow;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.label-habilidades-oculta {
-    display: inline-block;
-    margin: 10px;
-    padding: 5px 12px;
-    border: 4px solid var(--color-primary);
-    box-shadow: 6px 6px 0px var(--color-primary);
-    background-color: var(--color-accent);
-    font-size: 14px;
-    font-weight: bold;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-.evolutions img {
-    width: 90px;
-    margin: 10px;
-    image-rendering: pixelated;
-}
-
-/* .box{
-    background-color: black; 
-    width: 200px;
-    height: 200px;
-}  */
-
-.stats-list {
-    list-style: none;
-    padding: 0;
-}
-
-.stat-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-}
-
-.stat-name {
-    width: 90px;            /* Ajusta según quieras */
-    text-transform: capitalize;
-    font-weight: bold;
-}
-
-.stat-bar {
-    flex: 1;                /* Ocupa todo el espacio restante */
-    height: 15px;
-    background: white;
-    overflow: hidden;
-    border: 4px solid var(--color-primary);
-}
-
-.stat-fill {
-    height: 100%;
-    background: var(--color-btn-cyan);
-    transition: width 0.4s ease;
-}
-
-
-.ev-line {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.ev-ramificada {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.ev-ramas {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-left: 5px;
-}
-
-.ev-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px;
-    width: 110px;
-    background: #e8e8e8;
-    border: 2px solid #000;
-    cursor: pointer;
-    transition: transform .2s;
-}
-
-.ev-card:hover {
-    transform: scale(1.05);
-    background: #ffe68a;
-}
-
-.ev-card img {
-    width: 70px;
-}
-
-.flecha {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-
-/* ------------------- Carta principal ------------------- */
-.card {
-    background: white;
-    border: var(--border-width) solid var(--border-color);
-    box-shadow: var(--shadow);
-    padding: 20px;
-    max-width: 700px;
-    margin: 20px auto;
-    font-family: var(--font-family);
-    border-radius: 0; /* brutalist */
-}
-
-
-.card h2 {
-    font-weight: bold;
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.card #badge {
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 4px;
-    color: #fff;
-}
-
-/* boton favorito  */
-.btn-fav-heart {
-    width: 60px;
-    height: 60px;
-    border: 4px solid #000;
-    box-shadow: 6px 6px 0 #000;
-    background: white;
-    font-size: 28px;
-    cursor: pointer;
-    transition: transform 0.1s;
-}
-
-.btn-fav-heart.active {
-    background: #ff6b6b;
-    color: white;
-}
-
-.btn-fav-heart:active {
-    transform: translate(4px, 4px);
-    box-shadow: 2px 2px 0 #000;
-}
-
-/* ------------------- Caja de descripción ------------------- */
-.box-description {
-    background: #e0e0e0;
-    padding: 12px;
-    border-radius: 4px;
-    margin-bottom: 16px;
-}
-
-.box-description strong {
-    display: block;
-    margin-bottom: 6px;
-}
-
-/* ------------------- Grid de Pokémon ------------------- */
-.pokemon-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 3 por fila */
-    gap: 10px; /* espacio entre cajas */
-    max-height: 400px;
-    overflow-y: auto; /* scroll vertical si hay muchos */
-    padding-right: 4px; /* espacio para scroll */
-}
-
-/* ------------------- Caja individual de Pokémon ------------------- */
-.poke-card {
-    background: #f0f0f0;
-    border: 2px solid #000;
-    border-radius: 6px;
-    padding: 8px;
-    text-align: center;
-    font-size: 12px;
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.2s, background 0.2s;
-}
-
-.poke-card img {
-    width: 64px;  /* tamaño uniforme del sprite */
-    height: 64px;
-    object-fit: contain;
-    margin-bottom: 6px;
-}
-
-.poke-card:hover {
-    background: #6fd7f1; /* color hover similar al que muestras */
-    transform: translateY(-4px);
-}
-
-.poke-card small {
-    display: block;
-    color: #666;
-    font-size: 10px;
-}
-
-/* Scroll estético */
-.pokemon-grid::-webkit-scrollbar {
-    width: 8px;
-}
-
-.pokemon-grid::-webkit-scrollbar-thumb {
-    background-color: #aaa;
-    border-radius: 4px;
-}
-
-.pokemon-grid::-webkit-scrollbar-track {
-    background: #f0f0f0;
-}
-
-.no-favs-card {
-    text-align: center;
-    padding: 20px;
-    background: white;
-    border-radius: 15px;
-    font-size: 20px;
-}
-
-.fav-card {
-    background: white;
-    border-radius: 15px;
-    padding: 15px;
-    text-align: center;
-    width: 160px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.15);
-}
-
-.fav-card img {
-    width: 100px;
-    height: 100px;
-}
-
-.btn-remove {
-    margin-top: 10px;
-    padding: 6px;
-    background: #ff4444;
-    border: none;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.btn-remove-all {
-    margin-bottom: 20px;
-    padding: 10px;
-    width: 100%;
-    background: #b30000;
-    border: none;
-    color: white;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.types {
-    margin: 4px 0;
+  --color-bg: #f5e6d3;
+  --color-primary: #2d2d2d;
+  --color-accent: #ffcc00;
+  --color-secondary: #ff6b6b;
+
+  --color-success: #4ecdc4;
+  --color-error: #ff6b6b;
+  --color-warning: #ffa500;
+
+  --color-btn-cyan: #42ebe8;
+  --color-btn-red: #fe3636;
+  --color-btn-yellow: #ffe260;
+
+  --color-api: #4ecdc4;
+  --color-cache: #ffcc00;
+  --color-expired: #ffa500;
+
+  --border-width: 4px;
+  --border-color: #2d2d2d;
+  --shadow: 6px 6px 0px #2d2d2d;
+
+  --font-family: 'Courier New', monospace;
 }
 
 /* ===============================
-   VS - RESULTADO
+   BASE
+================================ */
+body {
+  background-color: white;
+  background-image: radial-gradient(circle, black 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-repeat: repeat;
+  min-height: 100vh;
+  font-family: var(--font-family);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ===============================
+   NAVEGACIÓN (BASE)
+================================ */
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===============================
+   NAV PRINCIPAL — BOTONES <a>
+================================ */
+.nav-main {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 30px 0;
+}
+
+/* Botón base */
+.nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 180px;
+  height: 60px;
+
+  background: white;
+  color: black;
+  text-decoration: none;
+
+  border: var(--border-width) solid var(--border-color);
+  box-shadow: var(--shadow);
+
+  font-family: var(--font-family);
+  font-weight: bold;
+  font-size: 18px;
+
+  cursor: pointer;
+  transition: transform 0.1s;
+
+  transition: transform 0.12s ease-out;
+}
+
+.nav-btn--red {
+  background: var(--color-btn-red);
+  color: white;
+}
+
+.nav-btn--yellow {
+  background: var(--color-btn-yellow);
+}
+
+/* Botón activo (BUSCAR) */
+.nav-btn.nav-active {
+  background: var(--color-btn-cyan);
+}
+
+/* Hover brutalist */
+.nav-btn:hover {
+  transform: scale(1.06);
+}
+
+/* Presión */
+.nav-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0 var(--border-color);
+}
+
+/* ===============================
+   FONDO POKEBALL
+================================ */
+.pokeball {
+  height: 70vmin;
+  width: 70vmin;
+  border-radius: 50%;
+  border: 4vmin solid black;
+  transform: rotate(-15deg);
+  background-image: radial-gradient(
+      rgba(255, 255, 255, 0.6) 20%,
+      rgba(255, 255, 255, 0.6) 20%,
+      black 20%,
+      black 30%,
+      transparent 30%
+    ),
+    linear-gradient(rgba(255, 0, 0, 0.6) 46%, black 46%, black 54%, rgba(255, 255, 255, 0.6) 54%);
+  -webkit-mask: radial-gradient(circle, transparent 17%, black 19%);
+  mask: radial-gradient(circle, transparent 17%, black 19%);
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ===============================
+   TÍTULO
+================================ */
+.title-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 110px;
+  margin-bottom: 75px; /* ← ESTO empuja el nav */
+  position: relative;
+  z-index: 2;
+}
+
+.title {
+  background-color: var(--color-btn-cyan);
+  height: 120px;
+  width: 600px;
+
+  border: var(--border-width) solid var(--border-color);
+  box-shadow: var(--shadow);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  font-size: 50px;
+  letter-spacing: 2px;
+
+  transform: rotate(-1deg);
+}
+
+/* ===============================
+   INPUT
+================================ */
+input {
+  border: var(--border-width) solid var(--border-color);
+  box-shadow: var(--shadow);
+  height: 50px;
+  width: 320px;
+  font-family: var(--font-family);
+  font-weight: bold;
+  font-size: larger;
+}
+
+/* ===============================
+   BOTONES (NO NAV)
+================================ */
+button {
+  border: var(--border-width) solid var(--border-color);
+  box-shadow: var(--shadow);
+  font-family: var(--font-family);
+  font-weight: bold;
+  height: 50px;
+  cursor: pointer;
+  background: white;
+}
+
+button:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0 var(--border-color);
+}
+
+.btn-white {
+  width: 180px;
+}
+.btn-white-small {
+  width: 100px;
+}
+.btn-cyan {
+  background: var(--color-btn-cyan);
+  width: 180px;
+}
+.btn-red {
+  background: var(--color-btn-red);
+  color: white;
+  width: 180px;
+}
+.btn-yellow {
+  background: var(--color-btn-yellow);
+  width: 180px;
+}
+
+/* ===============================
+   CARD — BASE ÚNICA
+================================ */
+.card {
+  background: white;
+  border: var(--border-width) solid var(--border-color);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  max-width: 450px;
+  margin: 20px auto;
+  font-family: var(--font-family);
+  border-radius: 0;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* ===============================
+   SPRITES
+================================ */
+.sprite {
+  width: 150px;
+  image-rendering: pixelated;
+}
+
+.sprite-box {
+  width: 180px;
+  height: 180px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: var(--border-width) solid var(--border-color);
+  box-shadow: var(--shadow);
+
+  background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 10px, #ffffff 10px, #ffffff 20px);
+}
+
+.sprite-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* contenedor de hear busqueda pokemon */
+
+.pokemon-header {
+  text-align: left;
+}
+.separator {
+  border: none;
+  border-top: 4px solid var(--color-primary);
+  margin: 12px 0 16px 0;
+}
+
+.section-separator {
+  margin: 24px 0;
+  border-top: 8px dashed var(--color-primary);
+}
+
+.pokemon-title {
+  margin-bottom: 8px;
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+.pokemon-types {
+  margin-bottom: 10px;
+}
+
+.pokemon-abilities {
+  margin-top: 6px;
+}
+
+/* ===============================
+   LABELS
 ================================ */
 
-/* Card base del VS */
-.vs-card {
-  position: relative;
-  border: 3px solid #000;
-  box-shadow: 6px 6px 0 #000;
-  padding: 16px;
-  min-width: 260px;
+.label {
+  display: inline-block;
+  margin: 4px;
+  padding: 5px 12px;
+  border: var(--border-width) solid var(--color-primary);
+  background: var(--color-primary);
+  color: white;
+  font-weight: bold;
+}
+
+.label-habilidades,
+.label-habilidades-oculta {
+  display: inline-block;
+  margin: 8px;
+  padding: 6px 12px;
+  border: var(--border-width) solid var(--color-primary);
+  box-shadow: var(--shadow);
+  font-weight: bold;
+}
+
+.label-habilidades {
+  background: greenyellow;
+}
+.label-habilidades-oculta {
+  background: var(--color-accent);
+}
+
+/* ===============================
+   STATS
+================================ */
+.stats-list {
+  list-style: none;
+  padding: 0;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+
+.stat-name {
+  width: 160px; /* controla alineación */
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+
+  font-size: medium;
+  font-weight: bolder;
+  margin-bottom: 12px;
+}
+
+.stat-bar {
+  flex: 1;
+  height: 16px;
+  border: var(--border-width) solid var(--color-primary);
+  background: white;
+}
+
+.stat-fill {
+  height: 100%;
+  background: var(--color-btn-cyan);
+}
+
+/* ===============================
+   FAVORITO (CORAZÓN)
+================================ */
+.fav-section {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.btn-fav-heart {
+  width: 64px;
+  height: 64px;
+
+  border: 4px solid black;
+  box-shadow: 6px 6px 0 black;
+
+  background: #ffc5d0;
+  font-size: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+/* ACTIVO (favorito) */
+.btn-fav-heart.active {
+  background: gray;
+  color: white;
+}
+
+/* EFECTO PRESIÓN */
+.btn-fav-heart:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0 black;
+}
+
+/* ===============================
+   EVOLUCIONES — BASE
+================================ */
+
+/* Contenedor general si lo usas */
+.evolutions {
+  margin-top: 30px;
   text-align: center;
-  transition: all 0.25s ease;
 }
 
-/* GANADOR */
-.vs-winner {
-  background: #7CFF7C; /* verde ganador */
-  border-color: #000;
+/* ===============================
+   CARTA DE EVOLUCIÓN
+================================ */
+.ev-card {
+  width: 120px;
+  height: 120px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: #e8e8e8;
+  border: 4px solid #000;
+  box-shadow: 6px 6px 0 #000;
+
+  cursor: pointer;
+  transition: transform 0.15s;
+
+  flex: 0 0 auto;
 }
 
-/* PERDEDOR */
-.vs-loser {
-  background: #e6e6e6;
-  opacity: 0.85;
-}
-
-/* EMPATE */
-.vs-tie {
+.ev-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 #000;
   background: #ffe68a;
 }
 
-/* Badge GANADOR */
-.vs-winner-badge {
-  position: absolute;
-  top: -14px;
-  right: -14px;
-  background: #ffe260;
-  border: 3px solid #000;
-  padding: 6px 10px;
+/* ===============================
+   SPRITE
+================================ */
+.ev-card img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  image-rendering: pixelated;
+
+  margin-top: 16px;
+}
+
+/* ===============================
+   NOMBRE
+================================ */
+.ev-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 36px; /* 🔴 CLAVE */
+  margin-top: auto; /* empuja el nombre abajo */
+
   font-weight: bold;
-  box-shadow: 3px 3px 0 #000;
   font-size: 14px;
+  letter-spacing: 1px;
+  text-align: center;
 }
 
-/* Puntos grandes */
-.vs-points {
-  font-size: 26px;
-  font-weight: bold;
-  color: #ff3b3b;
-  margin-top: 8px;
+/* ===============================
+   EVOLUCIÓN LINEAL (FIX)
+================================ */
+.ev-lineal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex-wrap: nowrap;
 }
 
-/* VS texto */
-.vs-text {
+/* ===============================
+   EVOLUCIÓN RAMIFICADA
+================================ */
+.ev-branch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.ev-ramas {
+  display: grid;
+  justify-content: center;
+  gap: 16px;
+}
+
+.ev-ramas-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 160px);
+  gap: 16px;
+  justify-content: center;
+}
+
+.ev-ramas:not(.ev-ramas-2) {
+  display: grid;
+  grid-template-columns: repeat(4, 160px);
+  gap: 16px;
+  justify-content: center;
+}
+
+.ev-root {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ===============================
+   FLECHA
+================================ */
+.flecha {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   font-size: 28px;
   font-weight: bold;
-  color: #ff3b3b;
+  color: red;
+
+  min-width: 24px;
 }
 
+/* ===============================
+   LANDING FAVORITOS / HISTORICO hola
+================================ */
+
+/* ===============================
+   FAVORITOS — LISTA CENTRAL
+================================ */
+
+/* ===============================
+   FAVORITOS — LISTA
+================================ */
+
+.fav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ===============================
+   TARJETA FAVORITO
+================================ */
+
+.fav-card {
+  display: grid;
+  grid-template-columns: 70px 1fr 70px;
+  align-items: center;
+  gap: 16px;
+  max-width: 700px;
+  padding: 14px 18px;
+
+  background: white;
+  border: 4px solid black;
+  box-shadow: 6px 6px 0 black;
+
+  cursor: pointer;
+
+  transition: transform 0.12s ease-out;
+}
+
+.fav-card:hover {
+  transform: scale(1.04);
+}
+
+.fav-card:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0 black;
+}
+
+/* SPRITE */
+.fav-sprite {
+  width: 56px;
+  height: 56px;
+  image-rendering: pixelated;
+}
+
+/* INFO CENTRAL */
+.fav-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fav-info strong {
+  font-size: 18px;
+}
+
+/* BOTÓN ELIMINAR */
+.btn-del-fav {
+  width: 64px;
+  height: 64px;
+
+  background: var(--color-btn-red);
+  color: white;
+
+  border: 4px solid black;
+  box-shadow: 6px 6px 0 black;
+
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.btn-del-fav:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0 black;
+}
+
+/* ===============================
+   BOTÓN LIMPIAR TODO
+================================ */
+
+.btn-clear-favs {
+  margin: 30px auto 0;
+  display: block;
+
+  width: 260px;
+  height: 60px;
+
+  background: var(--color-btn-red);
+  color: white;
+
+  font-weight: bold;
+  font-size: 18px;
+
+  border: 4px solid black;
+  box-shadow: 6px 6px 0 black;
+}
+
+.btn-clear-favs:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0 black;
+}
+
+/* Caja del sprite (favoritos / histórico) */
+.sprite-box-small {
+  width: 56px;
+  height: 56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: white;
+
+  border: 4px solid black;
+}
+
+/* Sprite */
+.sprite-small {
+  width: 60px;
+  height: 60px;
+  image-rendering: pixelated;
+}
+
+/* ======================================================
+   BOTONES HISTORIAL
+====================================================== */
+.fav-actions {
+      display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ===============================
+   GRID — HABILIDADES
+================================ */
+.pokemon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+
+  max-height: 420px;
+  overflow-y: auto;
+
+  padding: 16px;
+  background: #e0e0e0;
+  border: 4px solid black;
+}
+
+/* ===============================
+   TARJETA POKÉMON (HABILIDAD)
+================================ */
+.poke-card {
+  background: white;
+  border: 4px solid black;
+  box-shadow: 6px 6px 0 black;
+
+  padding: 12px 8px;
+  text-align: center;
+
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.poke-card:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 10px 10px 0 black;
+  background: var(--color-btn-cyan);
+}
+
+.poke-card img {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 8px;
+
+  image-rendering: pixelated;
+}
+
+.poke-card span {
+  display: block;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.poke-card small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: red;
+  font-weight: bold;
+}
+
+.pokemon-grid::-webkit-scrollbar {
+  width: 10px;
+}
+
+.pokemon-grid::-webkit-scrollbar-thumb {
+  background: black;
+}
+
+.pokemon-grid::-webkit-scrollbar-track {
+  background: #cfcfcf;
+}
+
+/* ===============================
+   EFECTO DE HABILIDAD
+================================ */
+.box-description {
+  background: #e0e0e0;
+  border: 4px solid black;
+  box-shadow: 6px 6px 0 black;
+  padding: 16px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.box-description strong {
+  display: block;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
