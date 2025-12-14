@@ -1,75 +1,4 @@
-/* LAYOUT */
-.app {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-}
-
-/* HEADER */
-.header {
-    background: #42ebe8;
-    border: 4px solid black;
-    padding: 16px;
-    margin-bottom: 20px;
-}
-
-.header-title {
-    font-size: 32px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 12px;
-}
-
-.nav {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-}
-
-/* HISTORICO LIST */
-.history-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.history-card {
-    background: white;
-    border: 4px solid black;
-    padding: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-}
-
-.history-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.history-left img {
-    width: 64px;
-    height: 64px;
-    image-rendering: pixelated;
-}
-
-.history-info strong {
-    font-size: 18px;
-}
-
-/* ACTIONS */
-.history-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.btn-icon {
-    border: 3px solid black;
-    background: #ffdede;
-    padding: 6px 10px;
-    cursor: pointer;:root {
+:root {
     /* Colores principales */
     --color-bg: #f5e6d3;
     /* Fondo beige */
@@ -617,48 +546,62 @@ ul {
     margin: 4px 0;
 }
 
-    font-size: 16px;
+/* ===============================
+   VS - RESULTADO
+================================ */
+
+/* Card base del VS */
+.vs-card {
+  position: relative;
+  border: 3px solid #000;
+  box-shadow: 6px 6px 0 #000;
+  padding: 16px;
+  min-width: 260px;
+  text-align: center;
+  transition: all 0.25s ease;
 }
 
-.btn-trash {
-    background: #ff4d4d;
+/* GANADOR */
+.vs-winner {
+  background: #7CFF7C; /* verde ganador */
+  border-color: #000;
 }
 
-/* FOOTER */
-.footer-actions {
-    margin-top: 20px;
-    text-align: center;
+/* PERDEDOR */
+.vs-loser {
+  background: #e6e6e6;
+  opacity: 0.85;
 }
 
-/* EMPTY */
-.empty-state {
-    text-align: center;
-    padding: 40px;
+/* EMPATE */
+.vs-tie {
+  background: #ffe68a;
 }
 
-/* ================= HISTÓRICO FAVORITOS ================= */
-
-.fav-historico-card {
-    position: relative;
+/* Badge GANADOR */
+.vs-winner-badge {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  background: #ffe260;
+  border: 3px solid #000;
+  padding: 6px 10px;
+  font-weight: bold;
+  box-shadow: 3px 3px 0 #000;
+  font-size: 14px;
 }
 
-.fav-historico-actions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 8px;
+/* Puntos grandes */
+.vs-points {
+  font-size: 26px;
+  font-weight: bold;
+  color: #ff3b3b;
+  margin-top: 8px;
 }
 
-.btn-historico-fav,
-.btn-historico-delete {
-    border: 2px solid black;
-    background: white;
-    cursor: pointer;
-    font-size: 14px;
-    padding: 4px 8px;
-}
-
-.btn-historico-delete {
-    background: var(--color-btn-red);
-    color: white;
+/* VS texto */
+.vs-text {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ff3b3b;
 }

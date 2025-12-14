@@ -4,35 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="test2.css">
     <title>Document</title>
 </head>
 
 <body>
+    <header>
+        <div class="pokeball"></div>
+        <div>
+            <div class="title-box">
+                <button class="title">POKÉMON FINDER</button>
+            </div>
 
-    <div class="pokeball"></div>
-    <div>
-        <div>
-            <button class="title">POKÉMON FINDER</P></button>
-        </div>
-        <div>
-            <nav>
-                <button class="btn-cyan">🔍 BUSCAR​</button>
-                <a href="historico.html" class="btn-cyan">📜 HISTÓRICO</a>
-                <a href="vs.html" class="btn-white">⚔️ VS</a>
-                <a href="favoritos.html"><button class="btn-white">❤️ FAVORITOS</button></a>
-                <!-- <a href="favoritos.html" class="btn-white">❤️ FAVORITOS</a> -->
-            </nav>
-        </div>
-        <div class="div-nav">
-            <select class="btn-yellow" name="" id="tipoSelect">
-                <option value="POKÉMON">👾​ POKÉMON</option>
-                <option value="HABILIDAD">⚡​HABILIDAD</option>
-            </select>
-            <input type="text" id="search" placeholder="NOMBRE O ID...">
-            <button class="btn-red" id="btn">BUSCAR</button>
-        </div>
-        <div id="result"></div>
+            <div>
+                <nav class="nav-main">
+                    <a href="index.html" class="nav-btn nav-active">🔍 BUSCAR</a>
+                    <a href="historico.html" class="nav-btn .nav-btn.nav-active ">📜 HISTÓRICO</a>
+                    <a href="vs.html" class="nav-btn">⚔️ VS</a>
+                    <a href="favoritos.html" class="nav-btn">❤️ FAVORITOS</a>
+                </nav>
+
+            </div>
+            <div class="nav-main">
+                <select class="nav-btn nav-btn--yellow" name="" id="tipoSelect">
+                    <option value="POKÉMON">👾​ POKÉMON</option>
+                    <option value="HABILIDAD">⚡​HABILIDAD</option>
+                </select>
+                <input type="text" id="search" placeholder="NOMBRE O ID...">
+                <button class="nav-btn nav-btn--red" id="btn">BUSCAR</button>
+            </div>
+    </header>
+
+
+    <div id="result"></div>
     </div>
 </body>
 <script src="test36.js"></script>

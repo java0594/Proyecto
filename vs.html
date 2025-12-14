@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokémon VS</title>
 
     <!-- CSS compartido -->
-    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="test2.css">
 </head>
 
 <body>
@@ -15,20 +16,19 @@
     <div class="pokeball"></div>
 
     <main>
-
-        <!-- TÍTULO -->
-        <div style="display:flex; justify-content:center; margin-bottom:20px;">
-            <div class="title">
-                ⚔️ POKÉMON VS ⚔️
+        <header>
+            <div class="title-box">
+                <button class="title">⚔️ POKÉMON VS ⚔️</button>
             </div>
-        </div>
+            <!-- NAVEGACIÓN -->
+            <nav class="nav-main">
+                <a href="index.html" class="nav-btn">🔍 BUSCAR</a>
+                <a href="historico.html" class="nav-btn">📜 HISTÓRICO</a>
+                <a href="vs.html" class="nav-btn nav-active">⚔️ VS</a>
+                <a href="favoritos.html" class="nav-btn">❤️ FAVORITOS</a>
+            </nav>
+        </header>
 
-        <!-- NAVEGACIÓN -->
-        <nav style="margin-bottom:30px;">
-            <a href="index.html" class="btn-white">🔍 BUSCAR</a>
-            <a href="historico.html" class="btn-white">📜 HISTÓRICO</a>
-            <a href="favoritos.html" class="btn-white">❤️ FAVORITOS</a>
-        </nav>
 
         <!-- BUSCADORES -->
         <div style="display:flex; justify-content:center; gap:20px; margin-bottom:30px;">
@@ -64,4 +64,5 @@
     <script src="test36.js"></script>
 
 </body>
+
 </html>
