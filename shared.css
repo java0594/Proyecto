@@ -39,7 +39,7 @@ a {
   --border-color: #2d2d2d;
   --shadow: 6px 6px 0px #2d2d2d;
 
-  --font-family: 'Courier New', monospace;
+  --font-family: "Courier New", monospace;
 }
 
 /* ===============================
@@ -143,7 +143,12 @@ nav {
       black 30%,
       transparent 30%
     ),
-    linear-gradient(rgba(255, 0, 0, 0.6) 46%, black 46%, black 54%, rgba(255, 255, 255, 0.6) 54%);
+    linear-gradient(
+      rgba(255, 0, 0, 0.6) 46%,
+      black 46%,
+      black 54%,
+      rgba(255, 255, 255, 0.6) 54%
+    );
   -webkit-mask: radial-gradient(circle, transparent 17%, black 19%);
   mask: radial-gradient(circle, transparent 17%, black 19%);
   position: fixed;
@@ -151,6 +156,18 @@ nav {
   margin: auto;
   z-index: -1;
   pointer-events: none;
+}
+
+.pokeball2 {
+  height: 74vmin;
+  width: 74vmin;
+  border-radius: 50%;
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  z-index: -1;
+  pointer-events: none;
+  box-shadow: 25px 15px 0 10px lightgray;
 }
 
 /* ===============================
@@ -243,7 +260,7 @@ button:active {
   border: var(--border-width) solid var(--border-color);
   box-shadow: var(--shadow);
   padding: 20px;
-  max-width: 450px;
+  max-width: 500px;
   margin: 20px auto;
   font-family: var(--font-family);
   border-radius: 0;
@@ -270,7 +287,13 @@ button:active {
   border: var(--border-width) solid var(--border-color);
   box-shadow: var(--shadow);
 
-  background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 10px, #ffffff 10px, #ffffff 20px);
+  background: repeating-linear-gradient(
+    45deg,
+    #f0f0f0,
+    #f0f0f0 10px,
+    #ffffff 10px,
+    #ffffff 20px
+  );
 }
 
 .sprite-container {
@@ -431,8 +454,8 @@ button:active {
    CARTA DE EVOLUCIÓN
 ================================ */
 .ev-card {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 110px;
 
   display: flex;
   flex-direction: column;
@@ -520,7 +543,7 @@ button:active {
 
 .ev-ramas:not(.ev-ramas-2) {
   display: grid;
-  grid-template-columns: repeat(4, 160px);
+  grid-template-columns: repeat(4, 115px);
   gap: 16px;
   justify-content: center;
 }
@@ -686,9 +709,9 @@ button:active {
    BOTONES HISTORIAL
 ====================================================== */
 .fav-actions {
-      display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /* ===============================
