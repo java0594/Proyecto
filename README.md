@@ -196,7 +196,7 @@ Endpoints principales:
 * Autocompletado en búsquedas.
 * Sonidos de Pokémon al buscar.
 
-## Capturas de Pantalla
+## 📸 Capturas de Pantalla
 ![alt text](image.png)
 ![alt text](image-1.png)
 ![alt text](image-2.png)
@@ -206,4 +206,4 @@ Endpoints principales:
 ![alt text](image-6.png)
 
 
-## Link a GitHub Pages
+## 🔗 Link a GitHub Pages
