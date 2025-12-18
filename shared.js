@@ -36,7 +36,7 @@ async function fetchConCache(url, key, tipo = 'pokemon') {
     if (raw) {
       const obj = JSON.parse(raw)
       if (Date.now() - obj.timestamp < CACHE_TTL) {
-        return {ok: true, source: 'cache', data: obj.data}
+        return { ok: true, source: 'cache', data: obj.data }
       }
     }
   } catch {
@@ -48,15 +48,15 @@ async function fetchConCache(url, key, tipo = 'pokemon') {
   try {
     res = await fetch(url)
   } catch (e) {
-    return {ok: false, error: `Network error: ${e.message}`}
+    return { ok: false, error: `Network error: ${e.message}` }
   }
-  if (!res.ok) return {ok: false, error: `HTTP ${res.status}`}
+  if (!res.ok) return { ok: false, error: `HTTP ${res.status}` }
 
   let data
   try {
     data = await res.json()
   } catch (e) {
-    return {ok: false, error: `JSON parse error: ${e.message}`}
+    return { ok: false, error: `JSON parse error: ${e.message}` }
   }
 
   // 3) normalizar
@@ -95,10 +95,10 @@ async function fetchConCache(url, key, tipo = 'pokemon') {
 
   // 4) guardar cache
   try {
-    localStorage.setItem(key, JSON.stringify({timestamp: Date.now(), data: essential}))
-  } catch {}
+    localStorage.setItem(key, JSON.stringify({ timestamp: Date.now(), data: essential }))
+  } catch { }
 
-  return {ok: true, source: 'api', data: essential}
+  return { ok: true, source: 'api', data: essential }
 }
 
 // -----------------------------------------------------
@@ -107,11 +107,11 @@ async function fetchConCache(url, key, tipo = 'pokemon') {
 async function fetchDirect(url) {
   try {
     const res = await fetch(url)
-    if (!res.ok) return {ok: false, error: `HTTP ${res.status}`}
+    if (!res.ok) return { ok: false, error: `HTTP ${res.status}` }
     const data = await res.json()
-    return {ok: true, data}
+    return { ok: true, data }
   } catch (e) {
-    return {ok: false, error: `Network error: ${e.message}`}
+    return { ok: false, error: `Network error: ${e.message}` }
   }
 }
 
@@ -152,7 +152,7 @@ function setHistorico(arr) {
 function guardarEnHistorico(p) {
   const h = getHistorico()
   if (!h.some(x => x.id === p.id)) {
-    h.push({id: p.id, name: p.name, sprite: p.sprite, types: p.types})
+    h.push({ id: p.id, name: p.name, sprite: p.sprite, types: p.types })
     setHistorico(h)
   }
 }
@@ -183,7 +183,7 @@ function toggleFavorito(p) {
   const favs = getFavoritos()
   const idx = favs.findIndex(x => x.id === p.id)
   if (idx >= 0) favs.splice(idx, 1)
-  else favs.push({id: p.id, name: p.name, sprite: p.sprite, types: p.types})
+  else favs.push({ id: p.id, name: p.name, sprite: p.sprite, types: p.types })
   setFavoritos(favs)
 }
 
@@ -284,7 +284,7 @@ function renderEvoluciones(nodo) {
 // -----------------------------------------------------
 async function mostrarPokemonInterno(entrada) {
   showMessage('Cargando Pokémon...')
-
+  const r = document.getElementById('result')
   const resultado = await obtenerPokemon(entrada)
   if (!resultado.ok) {
     showMessage('Pokémon no encontrado (' + (resultado.error || 'error') + ')')
@@ -297,15 +297,14 @@ async function mostrarPokemonInterno(entrada) {
   let evolucion = null
   try {
     evolucion = await obtenerEvolucionAvanzada(pokemon.speciesUrl)
-  } catch {}
+  } catch { }
 
   const htmlEvo = evolucion ? renderEvoluciones(evolucion) : '<p>No hay evoluciones</p>'
 
-  showResultHtml(`
+  r.innerHTML =`
     <div class="card">
-      <div id="badge" class="badge" style="background:${
-        resultado.source === 'api' ? '#007bff' : '#28a745'
-      }">
+      <div id="badge" class="badge" style="background:${resultado.source === 'api' ? '#007bff' : '#28a745'
+    }">
         ${resultado.source === 'api' ? '⚡ Datos desde API' : '💾 Desde Cache'}
       </div>
       <div class="sprite-container">
@@ -325,31 +324,30 @@ async function mostrarPokemonInterno(entrada) {
       <div class="pokemon-abilities">
       <h3 style="margin-left:10px; letter-spacing: 2px;">Habilidades</h3>
       ${pokemon.abilities
-        .map(
-          a => `
+      .map(
+        a => `
         <span class="label-habilidades ${a.is_hidden ? 'label-habilidades-oculta' : ''}">
           ${a.name}${a.is_hidden ? ' (Oculta 🔒)' : ''}
         </span>
       `
-        )
-        .join('')}
+      )
+      .join('')}
          </div>
  </div>
       <!--<h3>Estadísticas</h3>-->
       <ul class="stats-list">
         ${pokemon.stats
-          .map(
-            s => `
+      .map(
+        s => `
           <li class="stat-row">
             <span class="stat-name">${s.name}</span>
-            <div class="stat-bar"><div class="stat-fill" style="width:${
-              (s.base_stat / 250)*100
-            }%;"></div></div>
+            <div class="stat-bar"><div class="stat-fill" style="width:${(s.base_stat / 250) * 100
+          }%;"></div></div>
             <!-- <span class="stat-value">${s.base_stat}</span>-->
           </li>
         `
-          )
-          .join('')}
+      )
+      .join('')}
       </ul>
 
       <!--<h3>Favoritos</h3>-->
@@ -366,11 +364,11 @@ async function mostrarPokemonInterno(entrada) {
       <h3 style="letter-spacing: 2px;">CADENA DE EVOLUCION</h3>
       <div class="evolutions">${htmlEvo}</div>
     </div>
-  `)
+  `
 
   document.getElementById('btn-fav').onclick = () => {
     toggleFavorito(pokemon)
-    mostrarPokemonInterno(pokemon.name)
+   // mostrarPokemonInterno(pokemon.name)
   }
 }
 
@@ -391,15 +389,14 @@ async function mostrarHabilidadInterna(entrada) {
   const pokemonList = await Promise.all(
     ability.pokemon.map(async p => {
       const sprite = await obtenerSpriteSinCache(p.url)
-      return {name: p.name, sprite, isHidden: p.is_hidden}
+      return { name: p.name, sprite, isHidden: p.is_hidden }
     })
   )
 
   showResultHtml(`
     <div class="card">
-      <div id="badge" class="badge" style="background:${
-        resultado.source === 'api' ? '#007bff' : '#28a745'
-      }">
+      <div id="badge" class="badge" style="background:${resultado.source === 'api' ? '#007bff' : '#28a745'
+    }">
         ${resultado.source === 'api' ? '⚡ Datos desde API' : '💾 Desde Cache'}
       </div>
 
@@ -414,16 +411,16 @@ async function mostrarHabilidadInterna(entrada) {
 
       <div class="pokemon-grid">
         ${pokemonList
-          .map(
-            p => `
+      .map(
+        p => `
           <div class="poke-card ability-card" data-name="${p.name}">
             <img src="${p.sprite}" alt="${p.name}">
             <span>${p.name.toUpperCase()}</span>
             ${p.isHidden ? '<small>(oculta 🔒)</small>' : ''}
           </div>
         `
-          )
-          .join('')}
+      )
+      .join('')}
       </div>
     </div>
   `)
@@ -466,10 +463,10 @@ function mostrarHistorico() {
   r.innerHTML = `
     <div class="fav-list">
       ${h
-        .slice()
-        .reverse()
-        .map(
-  p => `
+      .slice()
+      .reverse()
+      .map(
+        p => `
     <div class="fav-card">
 
       <!-- SPRITE -->
@@ -503,20 +500,20 @@ function mostrarHistorico() {
 
     </div>
   `
-)
-}
+      )
+    }
     </div>
   `
   r.querySelectorAll('.btn-fav-heart').forEach(btn => {
-  btn.onclick = () => {
-    const id = Number(btn.dataset.id)
-    const poke = h.find(x => x.id === id)
-    if (!poke) return
+    btn.onclick = () => {
+      const id = Number(btn.dataset.id)
+      const poke = h.find(x => x.id === id)
+      if (!poke) return
 
-    toggleFavorito(poke)
-    mostrarHistorico() // refresca visual
-  }
-})
+      toggleFavorito(poke)
+      mostrarHistorico() // refresca visual
+    }
+  })
 
 
   r.querySelectorAll('.btn-toggle').forEach(btn => {
@@ -562,10 +559,10 @@ function mostrarFavoritos() {
   r.innerHTML = `
     <div class="fav-list">
       ${favs
-        .slice()
-        .reverse()
-        .map(
-          p => `
+      .slice()
+      .reverse()
+      .map(
+        p => `
         <div class="fav-card">
           <div class="sprite-box-small">
             <img class="sprite-small" src="${p.sprite}" alt="${p.name}">
@@ -582,8 +579,8 @@ function mostrarFavoritos() {
           <button class="btn-del-fav" data-id="${p.id}">🗑️</button>
         </div>
       `
-        )
-        .join('')}
+      )
+      .join('')}
     </div>
 
     <button id="clearFavoritos" class="btn-clear-favs">
@@ -679,8 +676,8 @@ function vsRenderPreview() {
       </div>
       <h3>#${r.data.id} ${r.data.name.toUpperCase()}</h3>
       ${safeArr(r.data.types)
-        .map(t => `<span class="label">${t}</span>`)
-        .join('')}
+      .map(t => `<span class="label">${t}</span>`)
+      .join('')}
     </div>
   `
 
@@ -705,7 +702,7 @@ function vsCompareStats(p1, p2) {
     let winner = 'tie'
     if (a > b) winner = 'left'
     else if (b > a) winner = 'right'
-    return {name: s.name, left: a, right: b, winner}
+    return { name: s.name, left: a, right: b, winner }
   })
 }
 
@@ -740,9 +737,9 @@ function vsBatallar() {
   // 2. TABLA DE TIPOS (simplificada)
   // -------------------------
   const TYPE_CHART = {
-    fire: {grass: 2, water: 0.5, fire: 0.5},
-    grass: {water: 2, fire: 0.5, grass: 0.5},
-    water: {fire: 2, grass: 0.5, water: 0.5},
+    fire: { grass: 2, water: 0.5, fire: 0.5 },
+    grass: { water: 2, fire: 0.5, grass: 0.5 },
+    water: { fire: 2, grass: 0.5, water: 0.5 },
   }
 
   function getMultiplier(attackerTypes, defenderTypes) {
@@ -834,9 +831,8 @@ function vsBatallar() {
         <div class="card" style="background:#eee;">
             <h3>🧮 Cálculo del Puntaje</h3>
             <p><strong>Stats Base Total:</strong> ${p1.name}: ${total1} | ${p2.name}: ${total2}</p>
-            <p><strong>Multiplicador de Tipo:</strong> ${p1.name}: x${mult1.toFixed(2)} | ${
-    p2.name
-  }: x${mult2.toFixed(2)}</p>
+            <p><strong>Multiplicador de Tipo:</strong> ${p1.name}: x${mult1.toFixed(2)} | ${p2.name
+    }: x${mult2.toFixed(2)}</p>
             <p><strong>Puntaje Final:</strong> ${p1.name}: ${final1} | ${p2.name}: ${final2}</p>
         </div>
     </div>

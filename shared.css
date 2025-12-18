@@ -1,5 +1,5 @@
 button,
-a {
+a, h1 {
   all: unset; /* elimina estilos nativos */
   box-sizing: border-box;
   display: inline-flex; /* MISMO modelo de caja */
@@ -596,7 +596,7 @@ button:active {
 
 .fav-card {
   display: grid;
-  grid-template-columns: 70px 1fr 70px;
+  grid-template-columns: 15% 60% 25%;
   align-items: center;
   gap: 16px;
   max-width: 700px;
@@ -677,6 +677,7 @@ button:active {
 
   border: 4px solid black;
   box-shadow: 6px 6px 0 black;
+  padding-left: 25px;
 }
 
 .btn-clear-favs:active {
@@ -710,7 +711,7 @@ button:active {
 ====================================================== */
 .fav-actions {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
 }
 
