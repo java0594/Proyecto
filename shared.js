@@ -1,7 +1,4 @@
-// =====================================================
-// test32.js  (Base test31 estable + VS extendido SIN romper nada)
-// =====================================================
-const CACHE_TTL = 10 * 60 * 1000 // 10 min
+const CACHE_TTL = 5 * 60 * 1000 
 
 // -----------------------------------------------------
 // HELPERS
@@ -244,7 +241,6 @@ function renderEvoluciones(nodo) {
 
   // -----------------------------
   // EVOLUCIÓN LINEAL
-  // A → B → C
   // -----------------------------
   if (nodo.children.length === 1) {
     return `
@@ -258,8 +254,6 @@ function renderEvoluciones(nodo) {
 
   // -----------------------------
   // EVOLUCIÓN RAMIFICADA
-  //        A →
-  //  [ B ] [ C ] [ D ] [ E ]
   // -----------------------------
   return `
     <div class="ev-branch">

@@ -10,13 +10,8 @@ a, h1 {
   font-family: var(--font-family);
 }
 
-/* ======================================================
-   TEST-CSS-01 — BASE BRUTALIST + BÚSQUEDA + NAV
-====================================================== */
 
-/* ===============================
-   VARIABLES
-================================ */
+/* VARIABLES*/
 :root {
   --color-bg: #f5e6d3;
   --color-primary: #2d2d2d;
@@ -42,9 +37,7 @@ a, h1 {
   --font-family: "Courier New", monospace;
 }
 
-/* ===============================
-   BASE
-================================ */
+/* BASE */
 body {
   background-color: white;
   background-image: radial-gradient(circle, black 1px, transparent 1px);
@@ -56,18 +49,14 @@ body {
   overflow-x: hidden;
 }
 
-/* ===============================
-   NAVEGACIÓN (BASE)
-================================ */
+/* NAVEGACIÓN (BASE) */
 nav {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* ===============================
-   NAV PRINCIPAL — BOTONES <a>
-================================ */
+/* NAV PRINCIPAL — BOTONES <a> */
 .nav-main {
   display: flex;
   justify-content: center;
@@ -127,9 +116,7 @@ nav {
   box-shadow: 2px 2px 0 var(--border-color);
 }
 
-/* ===============================
-   FONDO POKEBALL
-================================ */
+/* FONDO POKEBALL */
 .pokeball {
   height: 70vmin;
   width: 70vmin;
@@ -170,9 +157,7 @@ nav {
   box-shadow: 25px 15px 0 10px lightgray;
 }
 
-/* ===============================
-   TÍTULO
-================================ */
+/*  TÍTULO */
 .title-box {
   display: flex;
   justify-content: center;
@@ -201,9 +186,7 @@ nav {
   transform: rotate(-1deg);
 }
 
-/* ===============================
-   INPUT
-================================ */
+/* INPUT */
 input {
   border: var(--border-width) solid var(--border-color);
   box-shadow: var(--shadow);
@@ -214,9 +197,7 @@ input {
   font-size: larger;
 }
 
-/* ===============================
-   BOTONES (NO NAV)
-================================ */
+/* BOTONES (NO NAV)*/
 button {
   border: var(--border-width) solid var(--border-color);
   box-shadow: var(--shadow);
@@ -252,9 +233,7 @@ button:active {
   width: 180px;
 }
 
-/* ===============================
-   CARD — BASE ÚNICA
-================================ */
+/* CARD — BASE  */
 .card {
   background: white;
   border: var(--border-width) solid var(--border-color);
@@ -268,9 +247,7 @@ button:active {
   overflow: hidden;
 }
 
-/* ===============================
-   SPRITES
-================================ */
+/* SPRITES*/
 .sprite {
   width: 150px;
   image-rendering: pixelated;
@@ -302,7 +279,7 @@ button:active {
   align-items: center;
 }
 
-/* contenedor de hear busqueda pokemon */
+/* POKEMON HABILIDADES TIPO SEPARADORAS */
 
 .pokemon-header {
   text-align: left;
@@ -332,9 +309,7 @@ button:active {
   margin-top: 6px;
 }
 
-/* ===============================
-   LABELS
-================================ */
+/* LABELS */
 
 .label {
   display: inline-block;
@@ -363,9 +338,7 @@ button:active {
   background: var(--color-accent);
 }
 
-/* ===============================
-   STATS
-================================ */
+/* STATS*/
 .stats-list {
   list-style: none;
   padding: 0;
@@ -401,9 +374,7 @@ button:active {
   background: var(--color-btn-cyan);
 }
 
-/* ===============================
-   FAVORITO (CORAZÓN)
-================================ */
+/* FAVORITO (CORAZÓN)*/
 .fav-section {
   display: flex;
   justify-content: center;
@@ -440,19 +411,15 @@ button:active {
   box-shadow: 2px 2px 0 black;
 }
 
-/* ===============================
-   EVOLUCIONES — BASE
-================================ */
+/* EVOLUCIONES — BASE */
 
-/* Contenedor general si lo usas */
+/* CONTENODERO GENERAL */
 .evolutions {
   margin-top: 30px;
   text-align: center;
 }
 
-/* ===============================
-   CARTA DE EVOLUCIÓN
-================================ */
+/* CARTA DE EVOLUCIÓN */
 .ev-card {
   width: 100px;
   height: 110px;
@@ -477,9 +444,7 @@ button:active {
   background: #ffe68a;
 }
 
-/* ===============================
-   SPRITE
-================================ */
+/* SPRITE EVOLUTION */
 .ev-card img {
   width: 72px;
   height: 72px;
@@ -489,9 +454,7 @@ button:active {
   margin-top: 16px;
 }
 
-/* ===============================
-   NOMBRE
-================================ */
+/* NOMBRE */
 .ev-name {
   display: flex;
   align-items: center;
@@ -506,9 +469,7 @@ button:active {
   text-align: center;
 }
 
-/* ===============================
-   EVOLUCIÓN LINEAL (FIX)
-================================ */
+/* EVOLUCIÓN LINEAL (FIX) */
 .ev-lineal {
   display: flex;
   flex-direction: row;
@@ -518,9 +479,7 @@ button:active {
   flex-wrap: nowrap;
 }
 
-/* ===============================
-   EVOLUCIÓN RAMIFICADA
-================================ */
+/* EVOLUCIÓN RAMIFICADA */
 .ev-branch {
   display: flex;
   flex-direction: column;
@@ -554,9 +513,7 @@ button:active {
   gap: 20px;
 }
 
-/* ===============================
-   FLECHA
-================================ */
+/*  FLECHA */
 .flecha {
   display: inline-flex;
   align-items: center;
@@ -569,17 +526,11 @@ button:active {
   min-width: 24px;
 }
 
-/* ===============================
-   LANDING FAVORITOS / HISTORICO hola
-================================ */
+/* LANDING FAVORITOS / HISTORICO  */
 
-/* ===============================
-   FAVORITOS — LISTA CENTRAL
-================================ */
+/* FAVORITOS — LISTA CENTRAL */
 
-/* ===============================
-   FAVORITOS — LISTA
-================================ */
+/* FAVORITOS — LISTA */
 
 .fav-list {
   display: flex;
@@ -590,9 +541,7 @@ button:active {
   margin: 0 auto;
 }
 
-/* ===============================
-   TARJETA FAVORITO
-================================ */
+/* TARJETA FAVORITO */
 
 .fav-card {
   display: grid;
@@ -658,9 +607,7 @@ button:active {
   box-shadow: 2px 2px 0 black;
 }
 
-/* ===============================
-   BOTÓN LIMPIAR TODO
-================================ */
+/*  BOTÓN LIMPIAR TODO */
 
 .btn-clear-favs {
   margin: 30px auto 0;
@@ -706,18 +653,15 @@ button:active {
   image-rendering: pixelated;
 }
 
-/* ======================================================
-   BOTONES HISTORIAL
-====================================================== */
+/* 
+   BOTONES HISTORIAL */
 .fav-actions {
   display: flex;
   flex-direction: row;
   gap: 10px;
 }
 
-/* ===============================
-   GRID — HABILIDADES
-================================ */
+/* GRID — HABILIDADES */
 .pokemon-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -731,9 +675,8 @@ button:active {
   border: 4px solid black;
 }
 
-/* ===============================
-   TARJETA POKÉMON (HABILIDAD)
-================================ */
+
+/*   TARJETA POKÉMON (HABILIDAD) */
 .poke-card {
   background: white;
   border: 4px solid black;
@@ -787,9 +730,7 @@ button:active {
   background: #cfcfcf;
 }
 
-/* ===============================
-   EFECTO DE HABILIDAD
-================================ */
+/* EFECTO DE HABILIDAD */
 .box-description {
   background: #e0e0e0;
   border: 4px solid black;
